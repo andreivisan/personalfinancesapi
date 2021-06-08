@@ -23,7 +23,7 @@ public class PaymentSystem {
     @SequenceGenerator(name = "payment_system_sequence", sequenceName = "payment_system_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_system_sequence")
     @Column(name = "id", updatable = false)
-    private long id;
+    private Long id;
 
     @Column(name = "label", nullable = false, columnDefinition = "TEXT")
     private String label;
