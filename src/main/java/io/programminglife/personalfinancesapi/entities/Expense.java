@@ -1,6 +1,5 @@
 package io.programminglife.personalfinancesapi.entities;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
