@@ -8,7 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -23,10 +25,12 @@ import lombok.Setter;
 public class Expense {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "expense_sequence", sequenceName = "expense_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "expense_sequence")
+    @Column(name = "id", updatable = false)
     private long id;
 
-    @Column(name = "label", nullable = false)
+    @Column(name = "label", nullable = false, columnDefinition = "TEXT")
     private String label;
 
     @OneToOne
@@ -42,5 +46,9 @@ public class Expense {
 
     @Column(name = "amount", nullable = false)
     private long amount;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

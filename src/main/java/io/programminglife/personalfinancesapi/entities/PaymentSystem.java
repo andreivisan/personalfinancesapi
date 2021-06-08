@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -19,10 +20,12 @@ import lombok.Setter;
 public class PaymentSystem {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "payment_system_sequence", sequenceName = "payment_system_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_system_sequence")
+    @Column(name = "id", updatable = false)
     private long id;
 
-    @Column(name = "label", nullable = false)
+    @Column(name = "label", nullable = false, columnDefinition = "TEXT")
     private String label;
 
     public PaymentSystem(String label) {
