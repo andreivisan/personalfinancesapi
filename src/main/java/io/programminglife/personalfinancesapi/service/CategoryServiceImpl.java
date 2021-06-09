@@ -12,12 +12,8 @@ import io.programminglife.personalfinancesapi.repository.CategoryRepository;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    private CategoryRepository categoryRepository;
-
     @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
+    private CategoryRepository categoryRepository;
 
     @Override
     public List<Category> findAll() {
@@ -25,7 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category findCategoryById(Long categoryId) {
+    public Category findCategoryById(Long categoryId) throws MyFinancesException {
         return categoryRepository.findById(categoryId).orElseThrow(
                 () -> new MyFinancesException(String.format("Category with id %s was not found!", categoryId)));
     }
