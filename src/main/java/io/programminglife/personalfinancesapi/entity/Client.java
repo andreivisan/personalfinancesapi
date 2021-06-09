@@ -1,4 +1,4 @@
-package io.programminglife.personalfinancesapi.entities;
+package io.programminglife.personalfinancesapi.entity;
 
 import java.util.List;
 

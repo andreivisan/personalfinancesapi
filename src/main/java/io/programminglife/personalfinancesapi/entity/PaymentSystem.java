@@ -1,4 +1,4 @@
-package io.programminglife.personalfinancesapi.entities;
+package io.programminglife.personalfinancesapi.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,22 +13,22 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "category")
+@Table(name = "payment_system")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Category {
+public class PaymentSystem {
 
     @Id
-    @SequenceGenerator(name = "category_sequence", sequenceName = "category_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_sequence")
+    @SequenceGenerator(name = "payment_system_sequence", sequenceName = "payment_system_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_system_sequence")
     @Column(name = "id", updatable = false)
     private Long id;
 
     @Column(name = "label", nullable = false, columnDefinition = "TEXT")
     private String label;
 
-    public Category(String label) {
+    public PaymentSystem(String label) {
         this.label = label;
     }
 
