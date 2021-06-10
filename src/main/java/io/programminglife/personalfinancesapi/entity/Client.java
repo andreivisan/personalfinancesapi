@@ -43,6 +43,11 @@ public class Client {
     @JsonManagedReference
     private List<Expense> expenses;
 
+    public Client(String email, String iban) {
+        this.email = email;
+        this.iban = iban;
+    }
+
     public void addExpense(Expense expense) {
         if (!this.expenses.contains(expense)) {
             this.expenses.add(expense);
