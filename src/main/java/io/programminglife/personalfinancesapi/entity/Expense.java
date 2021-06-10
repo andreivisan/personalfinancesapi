@@ -11,9 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,22 +36,23 @@ public class Expense {
     @Column(name = "label", nullable = false, columnDefinition = "TEXT")
     private String label;
 
-    @OneToOne
+    @ManyToOne(cascade = { CascadeType.MERGE })
     @JoinColumn(name = "category_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "expense_category_fk"))
     private Category category;
 
     @Column(name = "expense_date", nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime expenseDate;
 
-    @OneToOne
+    @ManyToOne(cascade = { CascadeType.MERGE })
     @JoinColumn(name = "payment_system_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "expense_payment_system_fk"))
     private PaymentSystem paymentSystem;
 
     @Column(name = "amount", nullable = false)
     private long amount;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    @ManyToOne(cascade = { CascadeType.MERGE })
     @JoinColumn(name = "client_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "client_expense_fk"))
+    @JsonBackReference
     private Client client;
 
 }
