@@ -73,7 +73,7 @@ public class ExpenseRepositoryTest {
 
     @Test
     public void test_get_expenses_by_label() {
-        Expense expense = expenseRepository.save(createExpense());
+        expenseRepository.save(createExpense());
 
         List<Expense> expenses = expenseRepository.findExpensesByLabelEquals("Albert Heijn");
 
@@ -84,7 +84,7 @@ public class ExpenseRepositoryTest {
 
     @Test
     public void test_get_expense_by_category() {
-        Expense expense = expenseRepository.save(createExpense());
+        expenseRepository.save(createExpense());
 
         List<Expense> expenses = expenseRepository.findExpensesByCategoryEquals(1L);
 
