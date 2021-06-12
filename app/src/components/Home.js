@@ -1,12 +1,31 @@
+import axios from 'axios';
 import React, { Component } from 'react'
 
 class Home extends Component {
-    state = {  }
+    state = { 
+        selectedFile: null
+    }
 
     toggleSideNav() {
         const sidebar = document.querySelector(".sidebar");
         sidebar.classList.toggle("-translate-x-full");
     }
+
+    onFileChange = event => {
+        this.setState({selectedFile: event.target.files[0]});
+    }
+
+    onFileUpload = () => {  
+        const formData = new FormData(); 
+       
+        formData.append( 
+          "myFile", 
+          this.state.selectedFile, 
+          this.state.selectedFile.name 
+        ); 
+       
+        console.log(this.state.selectedFile); 
+      }; 
 
     render() { 
         return (
@@ -42,14 +61,26 @@ class Home extends Component {
                 <div class="flex-1 p-10 text-2xl font-bold bg-gray-100">
                     <div class="text-2xl">UPLOAD EXPENSES</div>
 
-                    <div class="flex w-full h-screen items-center justify-center bg-grey-lighter">
-                        <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white">
-                            <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                    <div class="mt-12 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                        <div class="space-y-1 text-center">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                                {/* <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /> */}
+                                <path d="M6 12h10v1h-10v-1zm7.816-3h-7.816v1h9.047c-.45-.283-.863-.618-1.231-1zm5.184 1.975v2.569c0 4.106-6 2.456-6 2.456s1.518 6-2.638 6h-7.362v-20h9.5c.312-.749.763-1.424 1.316-2h-12.816v24h10.189c3.163 0 9.811-7.223 9.811-9.614v-3.886c-.623.26-1.297.421-2 .475zm-13-3.975h6.5c-.134-.32-.237-.656-.319-1h-6.181v1zm17-2.5c0 2.485-2.017 4.5-4.5 4.5s-4.5-2.015-4.5-4.5 2.017-4.5 4.5-4.5 4.5 2.015 4.5 4.5zm-2-.5h-2v-2h-1v2h-2v1h2v2h1v-2h2v-1z"/>
                             </svg>
-                            <span class="mt-2 text-base leading-normal">Select a file</span>
-                            <input type='file' class="hidden" />
-                        </label>
+                            <div class="flex text-sm text-gray-600">
+                                <label for="file-upload" class="mt-2 relative cursor-pointe rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                    <span>Upload a file</span>
+                                    <input id="file-upload" name="file-upload" type="file" class="sr-only" onChange={this.onFileChange}/>
+                                </label>
+                                <p class="mt-2 pl-1">or drag and drop</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="px-4 py-3 text-right sm:px-1">
+                        <button class="inline-flex justify-center hover:bg-white text-sm font-medium py-2 px-4 border border-gray-400 rounded shadow" onClick={this.onFileUpload}>
+                            Upload
+                        </button>
                     </div>
                 </div>
             </div>
