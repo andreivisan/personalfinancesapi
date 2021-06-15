@@ -1,9 +1,13 @@
 import axios from 'axios';
+import ReactDOM from 'react-dom';
 import React, { Component } from 'react'
+
+import EditableTable from './EditableTable';
 
 class Home extends Component {
     state = { 
-        selectedFile: null
+        selectedFile: null,
+        csvEntities: null
     }
 
     toggleSideNav() {
@@ -23,8 +27,15 @@ class Home extends Component {
           this.state.selectedFile
         ); 
        
-        axios.post("api/v1/fileupload/", formData);
-      }; 
+        axios.post("api/v1/fileupload/", formData)
+             .then((response) => {
+                //  this.state.csvEntities = response.data;
+                ReactDOM.render(
+                    <EditableTable csvEntities={response.data} />,
+                    document.getElementById("test")
+                );
+             });
+    }; 
 
     render() { 
         return (
@@ -81,6 +92,8 @@ class Home extends Component {
                             Upload
                         </button>
                     </div>
+
+                    <div id="test"></div>
                 </div>
             </div>
         );
