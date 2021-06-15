@@ -19,12 +19,11 @@ class Home extends Component {
         const formData = new FormData(); 
        
         formData.append( 
-          "myFile", 
-          this.state.selectedFile, 
-          this.state.selectedFile.name 
+          "expensesCsv", 
+          this.state.selectedFile
         ); 
        
-        console.log(this.state.selectedFile); 
+        axios.post("api/v1/fileupload/", formData);
       }; 
 
     render() { 

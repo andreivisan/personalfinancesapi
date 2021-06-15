@@ -1,6 +1,6 @@
 package io.programminglife.personalfinancesapi.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -41,14 +41,14 @@ public class Expense {
     private Category category;
 
     @Column(name = "expense_date", nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private LocalDateTime expenseDate;
+    private LocalDate expenseDate;
 
     @ManyToOne(cascade = { CascadeType.MERGE })
     @JoinColumn(name = "payment_system_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "expense_payment_system_fk"))
     private PaymentSystem paymentSystem;
 
     @Column(name = "amount", nullable = false)
-    private long amount;
+    private Float amount;
 
     @ManyToOne(cascade = { CascadeType.MERGE })
     @JoinColumn(name = "client_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "client_expense_fk"))

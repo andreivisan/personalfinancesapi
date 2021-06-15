@@ -1,19 +1,20 @@
 package io.programminglife.personalfinancesapi.repository;
 
-import io.programminglife.personalfinancesapi.entity.Category;
-import io.programminglife.personalfinancesapi.entity.Client;
-import io.programminglife.personalfinancesapi.entity.Expense;
-import io.programminglife.personalfinancesapi.entity.PaymentSystem;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.time.LocalDate;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import io.programminglife.personalfinancesapi.entity.Category;
+import io.programminglife.personalfinancesapi.entity.Client;
+import io.programminglife.personalfinancesapi.entity.Expense;
+import io.programminglife.personalfinancesapi.entity.PaymentSystem;
 
 @DataJpaTest
 public class ExpenseRepositoryTest {
@@ -98,9 +99,9 @@ public class ExpenseRepositoryTest {
         Client client = entityManager.persist(new Client("andrei.m.visan@gmail.com", "1234"));
 
         Expense expense = new Expense();
-        expense.setExpenseDate(LocalDateTime.now());
+        expense.setExpenseDate(LocalDate.now());
         expense.setClient(client);
-        expense.setAmount(100);
+        expense.setAmount(100f);
         expense.setCategory(category);
         expense.setLabel("Albert Heijn");
         expense.setPaymentSystem(paymentSystem);
