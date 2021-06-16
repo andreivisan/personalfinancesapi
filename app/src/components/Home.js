@@ -93,7 +93,7 @@ class Home extends Component {
                         </button>
                     </div>
 
-                    <div id="editableTable"></div>
+                    <div id="editableTable" class="text-sm text-gray-900"></div>
                 </div>
             </div>
         );

@@ -26,35 +26,44 @@ class EditableTable extends Component {
                     title: 'Payment System',
                     field: 'paymentSystem'
                 }
-            ]
+            ],
+            data: this.props.csvEntities
         }
     }
 
     render() {
-        // if(this.props.csvEntities) {
-        //     const csvEntities = this.props.csvEntities;
-        //     return (
-        //         <div>
-        //             {csvEntities.map(csvEntity => (
-        //                 <div class="flex mb-4">
-        //                     <div class="w-1/5 bg-gray-500 h-12">{csvEntity.transactionDate}</div>
-        //                     <div class="w-1/5 bg-gray-400 h-12">{csvEntity.description}</div>
-        //                     <div class="w-1/5 bg-gray-500 h-12">{csvEntity.amount}</div>
-        //                     <div class="w-1/5 bg-gray-400 h-12">{csvEntity.paymentSystem}</div>
-        //                     <div class="w-1/5 bg-gray-500 h-12"></div>
-        //                 </div>
-        //             ))}
-        //         </div>
-        //     );
-        // } else {
-        //     return (
-        //         <div></div>
-        //     );
-        // }
         return (
-            <MaterialTable title="Edit Expenses"
-                data={this.props.csvEntities}
+            <MaterialTable 
+                title="Edit Expenses"
+                data={this.state.data}
                 columns={this.state.columns}
+                options={{
+                    actionsColumnIndex: -1
+                }}
+                editable={{
+                    onRowDelete: selectedRow => new Promise((resolve, reject) => {
+                        const index = selectedRow.tableData.id;
+                        const updatedRows = [...this.state.data];
+                        updatedRows.splice(index, 1);
+                        setTimeout(() => {
+                            this.setState({
+                                data: updatedRows
+                            })
+                            resolve()
+                        }, 2000)
+                    }),
+                    onRowUpdate: (updatedRow, oldRow) => new Promise((resolve, reject) => {
+                        const index = oldRow.tableData.id
+                        const updatedRows = [...this.state.data]
+                        updatedRows[index] = updatedRow
+                        setTimeout(() => {
+                            this.setState({
+                                data: updatedRows
+                            })
+                            resolve()
+                        }, 2000)
+                    })
+                }}
             />
         )
     }
