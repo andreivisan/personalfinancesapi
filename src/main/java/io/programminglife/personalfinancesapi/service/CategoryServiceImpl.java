@@ -1,6 +1,7 @@
 package io.programminglife.personalfinancesapi.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategory(Long categoryId) {
         categoryRepository.deleteById(categoryId);
+    }
+
+    @Override
+    public Optional<Category> findCategoryByLabel(String label) {
+        return categoryRepository.findCategoryByLabel(label);
     }
 
 }

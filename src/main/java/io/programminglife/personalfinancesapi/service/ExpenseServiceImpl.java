@@ -1,6 +1,7 @@
 package io.programminglife.personalfinancesapi.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import io.programminglife.personalfinancesapi.entity.PaymentSystem;
 import io.programminglife.personalfinancesapi.entity.csv.CsvEntity;
 import io.programminglife.personalfinancesapi.exception.MyFinancesException;
 import io.programminglife.personalfinancesapi.repository.ExpenseRepository;
+import io.programminglife.personalfinancesapi.util.csv.CSVUtil;
 
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
@@ -37,23 +39,16 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public Expense saveExpense(CsvEntity csvEntity) {
-        Expense expense = new Expense();
+        Optional<Category> categoryOptional = categoryService.findCategoryByLabel(csvEntity.getCategory());
+        Category category = categoryOptional.isPresent() ? categoryOptional.get()
+                : categoryService.saveCategory(new Category(csvEntity.getCategory()));
 
-        expense.setExpenseDate(csvEntity.getTransactionDate());
-        expense.setLabel(csvEntity.getDescription());
-        expense.setAmount(csvEntity.getAmount());
+        Optional<PaymentSystem> paymentSystemOptional = paymentSystemService
+                .findPaymentSystemByLabel(csvEntity.getPaymentSystem());
+        PaymentSystem paymentSystem = paymentSystemOptional.isPresent() ? paymentSystemOptional.get()
+                : paymentSystemService.savePaymentSystem(new PaymentSystem(csvEntity.getPaymentSystem()));
 
-        Category category = new Category(csvEntity.getCategory());
-        categoryService.saveCategory(category);
-        expense.setCategory(category);
-
-        PaymentSystem paymentSystem = new PaymentSystem(csvEntity.getPaymentSystem());
-        paymentSystemService.savePaymentSystem(paymentSystem);
-        expense.setPaymentSystem(paymentSystem);
-
-        expense.setClient(null);
-
-        return expenseRepository.save(expense);
+        return expenseRepository.save(CSVUtil.csvEntityToExpense(csvEntity, category, paymentSystem));
     }
 
     @Override

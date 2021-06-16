@@ -25,7 +25,7 @@ public class PaymentSystem {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "label", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "label", nullable = false, unique = true, columnDefinition = "TEXT")
     private String label;
 
     public PaymentSystem(String label) {

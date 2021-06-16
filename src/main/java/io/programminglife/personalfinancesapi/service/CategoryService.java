@@ -1,6 +1,7 @@
 package io.programminglife.personalfinancesapi.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import io.programminglife.personalfinancesapi.entity.Category;
 import io.programminglife.personalfinancesapi.exception.MyFinancesException;
@@ -14,5 +15,7 @@ public interface CategoryService {
     Category saveCategory(Category category);
 
     void deleteCategory(Long categoryId);
+
+    Optional<Category> findCategoryByLabel(String label);
 
 }

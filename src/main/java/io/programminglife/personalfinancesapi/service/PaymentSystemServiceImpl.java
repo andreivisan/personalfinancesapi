@@ -1,6 +1,7 @@
 package io.programminglife.personalfinancesapi.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,11 @@ public class PaymentSystemServiceImpl implements PaymentSystemService {
     @Override
     public void deletePaymentSystem(Long paymentSystemId) {
         paymentSystemRepository.deleteById(paymentSystemId);
+    }
+
+    @Override
+    public Optional<PaymentSystem> findPaymentSystemByLabel(String label) {
+        return paymentSystemRepository.findPaymentSystemByLabel(label);
     }
 
 }
