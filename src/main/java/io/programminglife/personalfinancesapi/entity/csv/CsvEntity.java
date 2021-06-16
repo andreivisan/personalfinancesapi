@@ -17,6 +17,8 @@ public class CsvEntity {
 
     private Float amount;
 
+    private String category;
+
     private String paymentSystem;
 
 }

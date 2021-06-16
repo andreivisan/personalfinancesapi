@@ -32,7 +32,7 @@ class Home extends Component {
                 //  this.state.csvEntities = response.data;
                 ReactDOM.render(
                     <EditableTable csvEntities={response.data} />,
-                    document.getElementById("test")
+                    document.getElementById("editableTable")
                 );
              });
     }; 
@@ -93,7 +93,7 @@ class Home extends Component {
                         </button>
                     </div>
 
-                    <div id="test"></div>
+                    <div id="editableTable"></div>
                 </div>
             </div>
         );

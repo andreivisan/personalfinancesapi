@@ -53,6 +53,7 @@ public class CSVUtil {
                 format.setDecimalFormatSymbols(symbols);
                 csvEntity.setAmount(format.parse(csvRecord.get(6)).floatValue());
 
+                csvEntity.setCategory("");
                 csvEntity.setPaymentSystem(csvRecord.get(7));
 
                 csvEntities.add(csvEntity);
