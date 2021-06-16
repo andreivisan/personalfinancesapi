@@ -62,14 +62,19 @@ class EditableTable extends Component {
                         const updatedRows = [...this.state.data]
                         updatedRows[index] = updatedRow
                         setTimeout(() => {
-                            this.setState({
-                                data: updatedRows
-                            })
                             this.addExpenseToDB(updatedRow)
                                 .then((response) => {
-                                    console.log(response)
+                                    this.setState({
+                                        data: updatedRows
+                                    })
+                                    if (response && response.status === 200) {
+                                        resolve();
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                    reject();
                                 });
-                            resolve()
                         }, 2000)
                     })
                 }}
