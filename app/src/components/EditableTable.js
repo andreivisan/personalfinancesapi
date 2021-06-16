@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import MaterialTable from 'material-table'
+import axios from 'axios';
 
 class EditableTable extends Component {
     constructor(props) {
@@ -31,6 +32,10 @@ class EditableTable extends Component {
         }
     }
 
+    addExpenseToDB = (csvEntity) => {
+        return axios.post("api/v1/expenses/save", csvEntity);
+    }
+
     render() {
         return (
             <MaterialTable 
@@ -60,6 +65,10 @@ class EditableTable extends Component {
                             this.setState({
                                 data: updatedRows
                             })
+                            this.addExpenseToDB(updatedRow)
+                                .then((response) => {
+                                    console.log(response)
+                                });
                             resolve()
                         }, 2000)
                     })

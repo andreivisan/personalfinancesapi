@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import io.programminglife.personalfinancesapi.entity.Category;
 import io.programminglife.personalfinancesapi.entity.Expense;
+import io.programminglife.personalfinancesapi.entity.PaymentSystem;
+import io.programminglife.personalfinancesapi.entity.csv.CsvEntity;
 import io.programminglife.personalfinancesapi.exception.MyFinancesException;
 import io.programminglife.personalfinancesapi.repository.ExpenseRepository;
 
@@ -14,6 +17,12 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Autowired
     private ExpenseRepository expenseRepository;
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private PaymentSystemService paymentSystemService;
 
     @Override
     public List<Expense> findAll() {
@@ -27,7 +36,23 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public Expense saveExpense(Expense expense) {
+    public Expense saveExpense(CsvEntity csvEntity) {
+        Expense expense = new Expense();
+
+        expense.setExpenseDate(csvEntity.getTransactionDate());
+        expense.setLabel(csvEntity.getDescription());
+        expense.setAmount(csvEntity.getAmount());
+
+        Category category = new Category(csvEntity.getCategory());
+        categoryService.saveCategory(category);
+        expense.setCategory(category);
+
+        PaymentSystem paymentSystem = new PaymentSystem(csvEntity.getPaymentSystem());
+        paymentSystemService.savePaymentSystem(paymentSystem);
+        expense.setPaymentSystem(paymentSystem);
+
+        expense.setClient(null);
+
         return expenseRepository.save(expense);
     }
 

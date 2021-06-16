@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.programminglife.personalfinancesapi.entity.Expense;
+import io.programminglife.personalfinancesapi.entity.csv.CsvEntity;
 import io.programminglife.personalfinancesapi.exception.MyFinancesException;
 import io.programminglife.personalfinancesapi.service.ExpenseService;
 
@@ -24,8 +25,8 @@ public class ExpenseController {
     private ExpenseService expenseService;
 
     @PostMapping("/save")
-    public ResponseEntity<Expense> save(@RequestBody Expense expense) {
-        return ResponseEntity.ok().body(expenseService.saveExpense(expense));
+    public ResponseEntity<Expense> save(@RequestBody CsvEntity csvEntity) {
+        return ResponseEntity.ok().body(expenseService.saveExpense(csvEntity));
     }
 
     @GetMapping
