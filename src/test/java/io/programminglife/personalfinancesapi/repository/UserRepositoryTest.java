@@ -29,7 +29,7 @@ public class UserRepositoryTest {
         Client testClient = clientRepository.save(new Client("test@test.com", "1234"));
 
         assertNotNull(testClient);
-        assertEquals("1234", testClient.getIban());
+        assertEquals("1234", testClient.getPassword());
     }
 
     @Test
@@ -39,7 +39,7 @@ public class UserRepositoryTest {
         Client client = clientRepository.findById(testClient.getId()).orElse(null);
 
         assertNotNull(client);
-        assertEquals(testClient.getIban(), client.getIban());
+        assertEquals(testClient.getPassword(), client.getPassword());
     }
 
     @Test

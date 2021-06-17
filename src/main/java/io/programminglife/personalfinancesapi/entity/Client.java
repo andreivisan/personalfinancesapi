@@ -36,16 +36,16 @@ public class Client {
     @Column(name = "email", nullable = false, columnDefinition = "TEXT")
     private String email;
 
-    @Column(name = "iban", nullable = false, columnDefinition = "TEXT")
-    private String iban;
+    @Column(name = "password", nullable = false, columnDefinition = "TEXT")
+    private String password;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Expense> expenses;
 
-    public Client(String email, String iban) {
+    public Client(String email, String password) {
         this.email = email;
-        this.iban = iban;
+        this.password = password;
     }
 
     public void addExpense(Expense expense) {
