@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 
 import SideBar from './SideBar';
 import UploadExpenses from './UploadExpenses';
+import Dashboard from './Dashboard';
 
 class Home extends Component {
     constructor(props) {
@@ -19,6 +20,7 @@ class Home extends Component {
 
                     <Switch>
                         <Route path="/uploadExpenses" component={UploadExpenses} />
+                        <Route path="/dashboard" component={Dashboard} />
                     </Switch>
                 </Router>
             </div>

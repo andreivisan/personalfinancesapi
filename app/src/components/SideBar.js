@@ -37,9 +37,9 @@ class SideBar extends Component {
                     <p class="block py-2.5 px-4 rounded transition duration-200 hover:text-white">
                         <Link to="/uploadExpenses"> Upload Expenses </Link>
                     </p>
-                    <a href="#" class="block py-2.5 px-4 rounded transition duration-200 hover:text-white">
-                        Dashboard
-                    </a>
+                    <p class="block py-2.5 px-4 rounded transition duration-200 hover:text-white">
+                        <Link to="/dashboard"> Dashboard </Link>
+                    </p>
                     </nav>
                 </div>
             </>
