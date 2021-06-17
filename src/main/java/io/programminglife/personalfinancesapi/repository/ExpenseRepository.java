@@ -19,4 +19,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     @Query(value = "SELECT * FROM expense WHERE payment_system_id = :paymentSystemId", nativeQuery = true)
     List<Expense> findExpensesByPaymentSystemEquals(@Param("paymentSystemId") Long paymentSystemId);
 
+    @Query(value = "SELECT SUM(amount) FROM expense WHERE category_id = :categoryId", nativeQuery = true)
+    Long findTotalAmountByCategory(@Param("categoryId") Long categoryId);
+
 }

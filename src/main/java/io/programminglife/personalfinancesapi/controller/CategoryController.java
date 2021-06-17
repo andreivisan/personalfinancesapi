@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.programminglife.personalfinancesapi.entity.Category;
+import io.programminglife.personalfinancesapi.entity.dashboard.PriceForCategory;
 import io.programminglife.personalfinancesapi.exception.MyFinancesException;
 import io.programminglife.personalfinancesapi.service.CategoryService;
 
@@ -45,6 +46,11 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(value = "id") Long id) {
         categoryService.deleteCategory(id);
+    }
+
+    @GetMapping("/totalMonthlyAmountPerCategory")
+    public ResponseEntity<List<PriceForCategory>> findTotalMonthlyAmountPerCategory() {
+        return ResponseEntity.ok().body(categoryService.findTotalMonthlyAmountPerCategory());
     }
 
 }
