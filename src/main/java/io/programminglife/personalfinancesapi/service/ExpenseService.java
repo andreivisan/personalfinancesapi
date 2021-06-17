@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.programminglife.personalfinancesapi.entity.Expense;
 import io.programminglife.personalfinancesapi.entity.csv.CsvEntity;
+import io.programminglife.personalfinancesapi.entity.dashboard.Transaction;
 import io.programminglife.personalfinancesapi.exception.MyFinancesException;
 
 public interface ExpenseService {
@@ -21,5 +22,7 @@ public interface ExpenseService {
     List<Expense> findExpensesByCategoryEquals(Long categoryId);
 
     List<Expense> findExpensesByPaymentSystemEquals(Long paymentSystemId);
+
+    List<Transaction> findAllTransactions();
 
 }

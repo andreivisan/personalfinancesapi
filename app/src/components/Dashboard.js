@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 
+import DataTable from './DataTable';
+
 class Dashboard extends Component {
     constructor(props) {
         super(props);
@@ -12,7 +14,6 @@ class Dashboard extends Component {
     componentDidMount() {
         axios.get('api/v1/categories/totalMonthlyAmountPerCategory')
              .then(response => {
-                 console.log(response.data);
                  this.setState({ totalMonthlyAmountPerCategory: response.data });
              })
              .catch(function (error) {
@@ -31,6 +32,10 @@ class Dashboard extends Component {
         })
     }
 
+    getTransactions() {
+        return <DataTable />
+    }
+
     render() { 
         const totalMonthlyAmountPerCategory = this.state.totalMonthlyAmountPerCategory;
         
@@ -38,7 +43,7 @@ class Dashboard extends Component {
             <div class="flex-1 p-10 text-2xl font-bold bg-gray-100">
                 <div class="text-2xl">EXPENSES OVERVIEW</div>
 
-                <div class="p-20">
+                <div class="mt-20">
                     <div class="bg-white p-6 rounded-lg shadow-lg">
                         <h2 class="text-2xl font-bold mb-2 text-gray-800">This month's expenses / category</h2>
                         <div class="grid grid-cols-3 gap-4 text-base mt-10">
@@ -47,7 +52,9 @@ class Dashboard extends Component {
                     </div>
                 </div>
 
-                <div id="expensesTable" class="text-sm text-gray-900"></div>
+                <div id="dataTable" class="text-sm text-gray-900 mt-20">
+                    {this.getTransactions()}
+                </div>
             </div>
         );
     }

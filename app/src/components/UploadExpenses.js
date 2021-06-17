@@ -24,12 +24,20 @@ class UploadExpenses extends Component {
        
         axios.post("api/v1/fileupload/", formData)
              .then((response) => {
-                ReactDOM.render(
-                    <EditableTable csvEntities={response.data} />,
-                    document.getElementById("editableTable")
-                );
+                this.setState({ csvEntities: response.data })
+             })
+             .catch(function (error) {
+                console.log(error);
              });
     }; 
+
+    renderCSVEntities() {
+        if (this.state.csvEntities) {
+            return <EditableTable csvEntities={this.state.csvEntities} />
+        } else {
+            return <></>
+        }
+    }
 
     render() { 
         return (
@@ -57,7 +65,9 @@ class UploadExpenses extends Component {
                     </button>
                 </div>
 
-                <div id="editableTable" class="text-sm text-gray-900"></div>
+                <div id="editableTable" class="text-sm text-gray-900">
+                    {this.renderCSVEntities()}
+                </div>
             </div>
         );
     }

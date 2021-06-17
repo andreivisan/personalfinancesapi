@@ -2,6 +2,7 @@ package io.programminglife.personalfinancesapi.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,9 +11,11 @@ import io.programminglife.personalfinancesapi.entity.Category;
 import io.programminglife.personalfinancesapi.entity.Expense;
 import io.programminglife.personalfinancesapi.entity.PaymentSystem;
 import io.programminglife.personalfinancesapi.entity.csv.CsvEntity;
+import io.programminglife.personalfinancesapi.entity.dashboard.Transaction;
 import io.programminglife.personalfinancesapi.exception.MyFinancesException;
 import io.programminglife.personalfinancesapi.repository.ExpenseRepository;
 import io.programminglife.personalfinancesapi.util.csv.CSVUtil;
+import io.programminglife.personalfinancesapi.util.dashboard.DashboardUtil;
 
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
@@ -69,6 +72,13 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public List<Expense> findExpensesByPaymentSystemEquals(Long paymentSystemId) {
         return expenseRepository.findExpensesByPaymentSystemEquals(paymentSystemId);
+    }
+
+    @Override
+    public List<Transaction> findAllTransactions() {
+        return findAll().stream().map(expense -> {
+            return DashboardUtil.expenseTransaction(expense);
+        }).collect(Collectors.toList());
     }
 
 }

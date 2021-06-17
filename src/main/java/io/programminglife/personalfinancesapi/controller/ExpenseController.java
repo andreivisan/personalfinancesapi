@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.programminglife.personalfinancesapi.entity.Expense;
 import io.programminglife.personalfinancesapi.entity.csv.CsvEntity;
+import io.programminglife.personalfinancesapi.entity.dashboard.Transaction;
 import io.programminglife.personalfinancesapi.exception.MyFinancesException;
 import io.programminglife.personalfinancesapi.service.ExpenseService;
 
@@ -59,8 +60,14 @@ public class ExpenseController {
     }
 
     @GetMapping("/paymentsystem/{paymentSystemId}")
-    List<Expense> findExpensesByPaymentSystemEquals(@PathVariable(value = "paymentSystemId") Long paymentSystemId) {
+    public List<Expense> findExpensesByPaymentSystemEquals(
+            @PathVariable(value = "paymentSystemId") Long paymentSystemId) {
         return expenseService.findExpensesByPaymentSystemEquals(paymentSystemId);
+    }
+
+    @GetMapping("/toTransactions")
+    public ResponseEntity<List<Transaction>> findAllTransactions() {
+        return ResponseEntity.ok().body(expenseService.findAllTransactions());
     }
 
 }
