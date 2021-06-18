@@ -11,6 +11,8 @@ public interface ClientService {
 
     Client findClientById(Long clientId) throws MyFinancesException;
 
+    Client findClientByEmail(String email) throws MyFinancesException;
+
     Client saveClient(Client client);
 
     void deleteClient(Long clientId);

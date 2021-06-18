@@ -33,7 +33,10 @@ public class Client {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "email", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "username", nullable = false, unique = true, columnDefinition = "TEXT")
+    private String username;
+
+    @Column(name = "email", nullable = false, unique = true, columnDefinition = "TEXT")
     private String email;
 
     @Column(name = "password", nullable = false, columnDefinition = "TEXT")
