@@ -42,4 +42,14 @@ public class ClientServiceImpl implements ClientService {
         clientRepository.deleteById(clientId);
     }
 
+    @Override
+    public Boolean existsByUsername(String username) {
+        return clientRepository.existsByUsername(username);
+    }
+
+    @Override
+    public Boolean existsByEmail(String email) {
+        return clientRepository.existsByEmail(email);
+    }
+
 }

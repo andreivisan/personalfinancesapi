@@ -17,4 +17,8 @@ public interface ClientService {
 
     void deleteClient(Long clientId);
 
+    Boolean existsByUsername(String username);
+
+    Boolean existsByEmail(String email);
+
 }
