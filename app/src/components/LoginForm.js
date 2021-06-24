@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
+import { Link } from "react-router-dom";
 
-class Login extends Component {
+class LoginForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {  }
+        this.state = {}
     }
-    render() { 
-        return ( 
+    render() {
+        return (
             <div class="flex flex-col h-screen bg-gray-100">
                 <div class="grid place-items-center mx-2 my-20 sm:my-auto">
                     <div class="w-11/12 p-12 sm:w-8/12 md:w-6/12 lg:w-5/12 2xl:w-4/12 
@@ -42,10 +43,10 @@ class Login extends Component {
                             </button>
 
                             <div class="sm:flex sm:flex-wrap mt-8 sm:mb-4 text-sm text-center">
-                                Not a user? 
-                                <a href="register" class="flex-2 underline ml-1">
-                                    Create an Account
-                                </a>
+                                Not a user?
+                                <p class="flex-2 underline ml-1">
+                                    <Link to="/register"> Create a user </Link>
+                                </p>
                             </div>
                         </form>
                     </div>
@@ -54,5 +55,5 @@ class Login extends Component {
         );
     }
 }
- 
-export default Login;
+
+export default LoginForm;
