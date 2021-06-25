@@ -7,6 +7,8 @@ import PrivateRoute from './common/PrivateRoute';
 import Dashboard from './Dashboard';
 import RegisterForm from './RegisterForm';
 
+import { ACCESS_TOKEN } from '../constants';
+
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -14,6 +16,19 @@ class Home extends Component {
             isUserAuthenticated: false,
             customUser: null
         }
+
+        this.isUserLoggedIn = this.isUserLoggedIn.bind(this);
+    }
+
+    isUserLoggedIn() {
+        const accessToken = localStorage.getItem(ACCESS_TOKEN);
+        if (accessToken) {
+            this.setState({
+                isUserAuthenticated: true
+            });
+            return true;
+        }
+        return false;
     }
 
     render() {
@@ -22,7 +37,7 @@ class Home extends Component {
                 <Switch>
                     <Route path="/login" exact component={LoginForm} />
                     <Route path="/register" exact component={RegisterForm} />
-                    <PrivateRoute path="/" loggedIn={this.state.isUserAuthenticated} component={Dashboard} />
+                    <PrivateRoute path="/" loggedIn={this.isUserLoggedIn} component={Dashboard} />
                 </Switch>
             </Router>
         );

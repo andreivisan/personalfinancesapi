@@ -1,11 +1,49 @@
 import React, { Component } from 'react'
 import { Link } from "react-router-dom";
+import axios from 'axios';
+import { ACCESS_TOKEN } from '../constants';
+import Home from './Home';
 
 class LoginForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            usernameOrEmail: '',
+            password: ''
+        }
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleLoginSuccess = this.handleLoginSuccess.bind(this);
     }
+
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        });
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+
+        axios.post("api/v1/auth/signin", this.state)
+            .then((response) => {
+                this.handleLoginSuccess(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    handleLoginSuccess(data) {
+        localStorage.setItem(ACCESS_TOKEN, data.accessToken);
+        this.props.history.push("/");
+    }
+
     render() {
         return (
             <div class="flex flex-col h-screen bg-gray-100">
@@ -18,14 +56,16 @@ class LoginForm extends Component {
                             Login
                         </h2>
 
-                        <form class="mt-10" method="POST">
-                            <label for="email" class="block text-xs font-semibold text-gray-600 uppercase">E-mail</label>
-                            <input id="email" type="email" name="email" placeholder="e-mail address" autocomplete="email"
+                        <form class="mt-10" onSubmit={this.handleSubmit}>
+                            <label for="usernameOrEmail" class="block text-xs font-semibold text-gray-600 uppercase">Username or E-mail</label>
+                            <input id="usernameOrEmail" type="usernameOrEmail" name="usernameOrEmail" placeholder="username or e-mail" autocomplete="usernameOrEmail"
                                 class="block w-full py-3 px-1 mt-2 
                                 text-gray-800 appearance-none 
                                 border-b-2 border-gray-100
                                 focus:text-gray-500 focus:outline-none focus:border-gray-200"
-                                required />
+                                required
+                                value={this.state.usernameOrEmail}
+                                onChange={this.handleInputChange} />
 
                             <label for="password" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Password</label>
                             <input id="password" type="password" name="password" placeholder="password" autocomplete="current-password"
@@ -33,10 +73,12 @@ class LoginForm extends Component {
                                 text-gray-800 appearance-none 
                                 border-b-2 border-gray-100
                                 focus:text-gray-500 focus:outline-none focus:border-gray-200"
-                                required />
+                                required
+                                value={this.state.password}
+                                onChange={this.handleInputChange} />
 
                             <button type="submit"
-                                class="w-full py-3 mt-10 bg-gray-800 rounded-sm
+                                class="w-full py-3 mt-10 bg-gray-900 rounded-sm
                                 font-medium text-white uppercase
                                 focus:outline-none hover:bg-gray-700 hover:shadow-none">
                                 Login

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import axios from 'axios';
-import { Redirect } from 'react-router';
 
 class RegisterForm extends Component {
     constructor(props) {
@@ -92,7 +91,7 @@ class RegisterForm extends Component {
                                 onChange={this.handleInputChange} />
 
                             <button type="submit"
-                                class="w-full py-3 mt-10 bg-gray-800 rounded-sm
+                                class="w-full py-3 mt-10 bg-gray-900 rounded-sm
                                 font-medium text-white uppercase
                                 focus:outline-none hover:bg-gray-700 hover:shadow-none">
                                 Register
