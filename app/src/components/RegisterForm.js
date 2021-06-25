@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios';
+import { Redirect } from 'react-router';
 
 class RegisterForm extends Component {
     constructor(props) {
@@ -30,7 +31,7 @@ class RegisterForm extends Component {
 
         axios.post("api/v1/auth/signup", this.state)
             .then((response) => {
-                console.log(response.data);
+                this.props.history.push("/login")
             })
             .catch(function (error) {
                 console.log(error);
