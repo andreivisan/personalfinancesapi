@@ -1,10 +1,42 @@
 import React, { Component } from 'react'
+import axios from 'axios';
 
 class RegisterForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            name: '',
+            username: '',
+            email: '',
+            password: ''
+        }
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        });
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+
+        axios.post("api/v1/auth/signup", this.state)
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
     render() {
         return (
             <div class="flex flex-col h-screen bg-gray-100">
@@ -17,14 +49,26 @@ class RegisterForm extends Component {
                             Register
                         </h2>
 
-                        <form class="mt-10" method="POST">
-                            <label for="username" class="block text-xs font-semibold text-gray-600 uppercase">Username</label>
+                        <form class="mt-10" onSubmit={this.handleSubmit}>
+                        <label for="name" class="block text-xs font-semibold text-gray-600 uppercase">Name</label>
+                            <input id="name" type="name" name="name" placeholder="name" autocomplete="name"
+                                class="block w-full py-3 px-1 mt-2 
+                                text-gray-800 appearance-none 
+                                border-b-2 border-gray-100
+                                focus:text-gray-500 focus:outline-none focus:border-gray-200"
+                                required
+                                value={this.state.name}
+                                onChange={this.handleInputChange} />
+
+                            <label for="username" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Username</label>
                             <input id="username" type="username" name="username" placeholder="username" autocomplete="username"
                                 class="block w-full py-3 px-1 mt-2 
                                 text-gray-800 appearance-none 
                                 border-b-2 border-gray-100
                                 focus:text-gray-500 focus:outline-none focus:border-gray-200"
-                                required />
+                                required
+                                value={this.state.username}
+                                onChange={this.handleInputChange} />
 
                             <label for="email" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">E-mail</label>
                             <input id="email" type="email" name="email" placeholder="e-mail address" autocomplete="email"
@@ -32,7 +76,9 @@ class RegisterForm extends Component {
                                 text-gray-800 appearance-none 
                                 border-b-2 border-gray-100
                                 focus:text-gray-500 focus:outline-none focus:border-gray-200"
-                                required />
+                                required
+                                value={this.state.email}
+                                onChange={this.handleInputChange} />
 
                             <label for="password" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Password</label>
                             <input id="password" type="password" name="password" placeholder="password" autocomplete="current-password"
@@ -40,7 +86,9 @@ class RegisterForm extends Component {
                                 text-gray-800 appearance-none 
                                 border-b-2 border-gray-100
                                 focus:text-gray-500 focus:outline-none focus:border-gray-200"
-                                required />
+                                required
+                                value={this.state.password}
+                                onChange={this.handleInputChange} />
 
                             <button type="submit"
                                 class="w-full py-3 mt-10 bg-gray-800 rounded-sm

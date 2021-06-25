@@ -51,7 +51,7 @@ public class AuthenticationController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signupRequest) {
         if (clientService.existsByUsername(signupRequest.getUsername())
-                && clientService.existsByUsername(signupRequest.getEmail())) {
+                || clientService.existsByEmail(signupRequest.getEmail())) {
             return ResponseEntity.badRequest().build();
         }
 
