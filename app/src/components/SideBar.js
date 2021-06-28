@@ -1,15 +1,24 @@
 import { Link } from "react-router-dom";
 import React, { Component } from 'react';
 
+import { ACCESS_TOKEN } from "../constants";
+
 class SideBar extends Component {
     constructor(props) {
         super(props);
         this.state = {}
+
+        this.handleLogout = this.handleLogout.bind(this);
     }
 
     toggleSideNav() {
         const sidebar = document.querySelector(".sidebar");
         sidebar.classList.toggle("-translate-x-full");
+    }
+
+    handleLogout() {
+        localStorage.removeItem(ACCESS_TOKEN);
+        this.props.history.push("/");
     }
 
     render() {
@@ -39,6 +48,10 @@ class SideBar extends Component {
                         </p>
                         <p class="block py-2.5 px-4 rounded transition duration-200 hover:text-white">
                             <Link to="/overview"> Expenses Overview </Link>
+                        </p>
+
+                        <p class="block mb-2 py-2.5 px-4 rounded transition duration-200 hover:text-white">
+                            <a href="" onClick={this.handleLogout}> Logout </a>
                         </p>
                     </nav>
                 </div>

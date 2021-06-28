@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import { ACCESS_TOKEN } from '../constants';
-import Home from './Home';
 
 class LoginForm extends Component {
     constructor(props) {
@@ -14,7 +13,6 @@ class LoginForm extends Component {
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleLoginSuccess = this.handleLoginSuccess.bind(this);
     }
 
     handleInputChange(event) {
@@ -32,16 +30,13 @@ class LoginForm extends Component {
 
         axios.post("api/v1/auth/signin", this.state)
             .then((response) => {
-                this.handleLoginSuccess(response.data);
+                localStorage.setItem(ACCESS_TOKEN, response.data.accessToken);
+                console.log("test");
+                this.props.history.push('/');
             })
             .catch(function (error) {
                 console.log(error);
             });
-    }
-
-    handleLoginSuccess(data) {
-        localStorage.setItem(ACCESS_TOKEN, data.accessToken);
-        this.props.history.push("/");
     }
 
     render() {
