@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 
 import EditableTable from './EditableTable';
 
+import { ACCESS_TOKEN } from '../constants';
+
 class UploadExpenses extends Component {
     state = {
         selectedFile: null,
@@ -15,13 +17,18 @@ class UploadExpenses extends Component {
 
     onFileUpload = () => {
         const formData = new FormData();
+        const jwtToken = localStorage.getItem(ACCESS_TOKEN);
 
         formData.append(
             "expensesCsv",
             this.state.selectedFile
         );
 
-        axios.post("api/v1/fileupload/", formData)
+        axios.post("api/v1/fileupload/", formData, {
+            headers: {
+                'Authorization': jwtToken
+            }
+        })
             .then((response) => {
                 this.setState({ csvEntities: response.data })
             })

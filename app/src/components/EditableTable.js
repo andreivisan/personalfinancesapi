@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import MaterialTable from 'material-table'
 import axios from 'axios';
 
+import { ACCESS_TOKEN } from '../constants';
+
 class EditableTable extends Component {
     constructor(props) {
         super(props);
@@ -33,7 +35,12 @@ class EditableTable extends Component {
     }
 
     addExpenseToDB = (csvEntity) => {
-        return axios.post("api/v1/expenses/save", csvEntity);
+        const jwtToken = localStorage.getItem(ACCESS_TOKEN);
+        return axios.post("api/v1/expenses/save", csvEntity, {
+            headers: {
+                'Authorization': jwtToken
+            }
+        });
     }
 
     render() {

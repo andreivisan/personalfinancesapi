@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 
 import DataTable from './DataTable';
 
+import { ACCESS_TOKEN } from '../constants';
+
 class Dashboard extends Component {
     constructor(props) {
         super(props);
@@ -12,7 +14,12 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        axios.get('api/v1/categories/totalMonthlyAmountPerCategory')
+        const jwtToken = localStorage.getItem(ACCESS_TOKEN);
+        axios.get('api/v1/categories/totalMonthlyAmountPerCategory', {
+            headers: {
+                'Authorization': jwtToken
+            }
+        })
             .then(response => {
                 this.setState({ totalMonthlyAmountPerCategory: response.data });
             })

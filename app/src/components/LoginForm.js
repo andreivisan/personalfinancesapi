@@ -30,7 +30,8 @@ class LoginForm extends Component {
 
         axios.post("api/v1/auth/signin", this.state)
             .then((response) => {
-                localStorage.setItem(ACCESS_TOKEN, response.data.accessToken);
+                const accessToken = response.data.tokenType + " " + response.data.accessToken;
+                localStorage.setItem(ACCESS_TOKEN, accessToken);
                 this.props.history.push('/');
             })
             .catch(function (error) {
