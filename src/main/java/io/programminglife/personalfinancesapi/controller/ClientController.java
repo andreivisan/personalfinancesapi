@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.programminglife.personalfinancesapi.entity.Client;
 import io.programminglife.personalfinancesapi.exception.MyFinancesException;
+import io.programminglife.personalfinancesapi.payload.ClientSummary;
+import io.programminglife.personalfinancesapi.security.CurrentUser;
+import io.programminglife.personalfinancesapi.security.UserPrincipal;
 import io.programminglife.personalfinancesapi.service.ClientService;
 
 @RestController
@@ -22,6 +25,14 @@ public class ClientController {
 
     @Autowired
     private ClientService clientService;
+
+    @GetMapping("/me")
+    public ResponseEntity<ClientSummary> getCurrentUser(@CurrentUser UserPrincipal currentUser) {
+        ClientSummary clientSummary = new ClientSummary(currentUser.getId(), currentUser.getUsername(),
+                currentUser.getName());
+
+        return ResponseEntity.ok().body(clientSummary);
+    }
 
     @PostMapping("/save")
     public ResponseEntity<Client> save(@RequestBody Client client) {

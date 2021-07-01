@@ -20,6 +20,8 @@ public class UserPrincipal implements UserDetails {
 
     private Long id;
 
+    private String name;
+
     private String username;
 
     @JsonIgnore
@@ -28,15 +30,17 @@ public class UserPrincipal implements UserDetails {
     @JsonIgnore
     private String password;
 
-    public UserPrincipal(Long id, String username, String email, String password) {
+    public UserPrincipal(Long id, String name, String username, String email, String password) {
         this.id = id;
+        this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
     }
 
     public static UserPrincipal create(Client client) {
-        return new UserPrincipal(client.getId(), client.getUsername(), client.getEmail(), client.getPassword());
+        return new UserPrincipal(client.getId(), client.getName(), client.getUsername(), client.getEmail(),
+                client.getPassword());
     }
 
     @Override

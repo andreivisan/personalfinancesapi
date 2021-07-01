@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 class SideBar extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = { }
     }
 
     toggleSideNav() {
@@ -34,7 +34,10 @@ class SideBar extends Component {
                     </a>
 
                     <nav>
-                        <p class="block py-2.5 px-4 rounded transition duration-200 hover:text-white">
+                        <p class="block py-2.5 px-4 rounded transition duration-200 uppercase text-lg text-white">
+                            {this.props.currentUser.name}
+                        </p>
+                        <p class="block mt-10 py-2.5 px-4 rounded transition duration-200 hover:text-white">
                             <Link to="/uploadExpenses"> Upload Expenses </Link>
                         </p>
                         <p class="block py-2.5 px-4 rounded transition duration-200 hover:text-white">
