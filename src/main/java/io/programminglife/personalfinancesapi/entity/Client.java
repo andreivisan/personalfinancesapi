@@ -11,8 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;
@@ -20,8 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "client", uniqueConstraints = { @UniqueConstraint(name = "client_email_unique", columnNames = "email"),
-        @UniqueConstraint(name = "client_iban_unique", columnNames = "iban") })
+@Table(name = "client")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -33,10 +32,18 @@ public class Client {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "email", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "name", nullable = false, columnDefinition = "TEXT")
+    private String name;
+
+    @Column(name = "username", nullable = false, unique = true, columnDefinition = "TEXT")
+    private String username;
+
+    @Column(name = "email", nullable = false, unique = true, columnDefinition = "TEXT")
+    @JsonIgnore
     private String email;
 
     @Column(name = "password", nullable = false, columnDefinition = "TEXT")
+    @JsonIgnore
     private String password;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)

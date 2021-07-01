@@ -27,6 +27,12 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public Client findClientByEmail(String email) throws MyFinancesException {
+        return clientRepository.findByEmail(email)
+                .orElseThrow(() -> new MyFinancesException(String.format("Client with email %s was not found", email)));
+    }
+
+    @Override
     public Client saveClient(Client client) {
         return clientRepository.save(client);
     }
@@ -34,6 +40,16 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void deleteClient(Long clientId) {
         clientRepository.deleteById(clientId);
+    }
+
+    @Override
+    public Boolean existsByUsername(String username) {
+        return clientRepository.existsByUsername(username);
+    }
+
+    @Override
+    public Boolean existsByEmail(String email) {
+        return clientRepository.existsByEmail(email);
     }
 
 }

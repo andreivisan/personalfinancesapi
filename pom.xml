@@ -73,6 +73,13 @@
             <artifactId>commons-csv</artifactId>
             <version>1.8</version>
         </dependency>
+
+        <!-- Generate JWT Token -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import MaterialTable from 'material-table'
 import axios from 'axios';
 
+import { ACCESS_TOKEN } from '../constants';
+
 class DataTable extends Component {
     constructor(props) {
         super(props);
@@ -33,7 +35,12 @@ class DataTable extends Component {
     }
 
     componentDidMount() {
-        axios.get('api/v1/expenses/toTransactions')
+        const jwtToken = localStorage.getItem(ACCESS_TOKEN);
+        axios.get('api/v1/expenses/toTransactions', {
+            headers: {
+                'Authorization': jwtToken
+            }
+        })
              .then(response => { 
                 this.setState({ data: response.data });
              })

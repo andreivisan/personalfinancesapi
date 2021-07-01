@@ -1,31 +1,34 @@
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 
-import SideBar from './SideBar';
-import UploadExpenses from './UploadExpenses';
+import LoginForm from './LoginForm';
+import PrivateRoute from './common/PrivateRoute';
 import Dashboard from './Dashboard';
+import RegisterForm from './RegisterForm';
+import { history } from './common/History';
+
 
 class Home extends Component {
     constructor(props) {
         super(props);
-        this.state = {  }
+        this.state = {
+            customUser: null
+        }
     }
 
-    render() { 
-        return ( 
-            <div class="relative min-h-screen md:flex">
-                <Router>
-                    <SideBar />
-
-                    <Switch>
-                        <Route path="/uploadExpenses" component={UploadExpenses} />
-                        <Route path="/dashboard" component={Dashboard} />
-                    </Switch>
-                </Router>
-            </div>
+    render() {
+        return (
+            <Router history={history}>
+                <Switch>
+                    <Route path="/login" exact component={LoginForm} />
+                    <Route path="/register" exact component={RegisterForm} />
+                    <PrivateRoute exact path="/" component={(props) => <Dashboard {...props} />} />
+                </Switch>
+            </Router>
         );
     }
 }
- 
-export default Home;
+
+export default withRouter(Home);

@@ -1,63 +1,41 @@
-import axios from 'axios';
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import DataTable from './DataTable';
+import SideBar from './SideBar';
+import UploadExpenses from './UploadExpenses';
+import ExpensesOverview from './ExpensesOverview';
+import { history } from './common/History';
+
+import { ACCESS_TOKEN } from "../constants";
+
 
 class Dashboard extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
-            totalMonthlyAmountPerCategory: []
-        }
+        this.state = {}
+
+        this.handleLogout = this.handleLogout.bind(this);
     }
 
-    componentDidMount() {
-        axios.get('api/v1/categories/totalMonthlyAmountPerCategory')
-             .then(response => {
-                 this.setState({ totalMonthlyAmountPerCategory: response.data });
-             })
-             .catch(function (error) {
-                 console.log(error);
-             })
+    handleLogout() {
+        localStorage.removeItem(ACCESS_TOKEN);
+        this.props.history.push("/");
     }
 
-    categories() {
-        return this.state.totalMonthlyAmountPerCategory.map(data => {
-            return (
-                <>
-                    <div class="col-span-2 text-gray-500">{data.category}</div>
-                    <div>{data.totalAmount} <span class="text-gray-500">&euro;</span></div>
-                </>
-            )
-        })
-    }
+    render() {
+        return (
+            <Router history={history}>
+                <div class="relative min-h-screen md:flex">
+                    <SideBar onLogout={this.handleLogout}/>
 
-    getTransactions() {
-        return <DataTable />
-    }
-
-    render() { 
-        const totalMonthlyAmountPerCategory = this.state.totalMonthlyAmountPerCategory;
-        
-        return ( 
-            <div class="flex-1 p-10 text-2xl font-bold bg-gray-100">
-                <div class="text-2xl">EXPENSES OVERVIEW</div>
-
-                <div class="mt-20">
-                    <div class="bg-white p-6 rounded-lg shadow-lg">
-                        <h2 class="text-2xl font-bold mb-2 text-gray-800">This month's expenses / category</h2>
-                        <div class="grid grid-cols-3 gap-4 text-base mt-10">
-                            {this.categories()}
-                        </div>
-                    </div>
+                    <Switch>
+                        <Route path="/uploadExpenses" exact component={UploadExpenses} />
+                        <Route path="/overview" exact component={ExpensesOverview} />
+                    </Switch>
                 </div>
-
-                <div id="dataTable" class="text-sm text-gray-900 mt-20">
-                    {this.getTransactions()}
-                </div>
-            </div>
+            </Router>
         );
     }
 }
- 
+
 export default Dashboard;
