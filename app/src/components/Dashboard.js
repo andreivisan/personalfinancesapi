@@ -49,7 +49,7 @@ class Dashboard extends Component {
         return (
             <Router history={history}>
                 <div class="relative min-h-screen md:flex">
-                    <SideBar onLogout={this.handleLogout} currentUser={this.state.currentUser} />;
+                    <SideBar onLogout={this.handleLogout} currentUser={this.state.currentUser} />
 
                     <Switch>
                         <Route path="/uploadExpenses" render={() => <UploadExpenses currentUser={this.state.currentUser} />} />
