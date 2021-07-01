@@ -10,6 +10,11 @@ class DataTable extends Component {
         this.state = { 
             columns: [
                 {
+                    title: 'ID',
+                    field: 'transactionId',
+                    hidden: true
+                },
+                {
                     title: 'Date',
                     field: 'date'
                 },
@@ -41,12 +46,21 @@ class DataTable extends Component {
                 'Authorization': jwtToken
             }
         })
-             .then(response => { 
+             .then(response => {
                 this.setState({ data: response.data });
              })
              .catch(function (error) {
                 console.log(error);
              })
+    }
+
+    deleteExpenseFromDB = (transactionId) => {
+        const jwtToken = localStorage.getItem(ACCESS_TOKEN);
+        return axios.delete(`api/v1/expenses/${transactionId}`, {
+            headers: {
+                'Authorization': jwtToken
+            }
+        });
     }
 
     render() { 
@@ -65,10 +79,19 @@ class DataTable extends Component {
                         const updatedRows = [...this.state.data];
                         updatedRows.splice(index, 1);
                         setTimeout(() => {
-                            this.setState({
-                                data: updatedRows
-                            })
-                            resolve()
+                            this.deleteExpenseFromDB(selectedRow.transactionId)
+                                .then((response) => {
+                                    this.setState({
+                                        data: updatedRows
+                                    })
+                                    if (response && response.status === 200) {
+                                        resolve();
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                    reject();
+                                });
                         }, 2000)
                     })
                 }}

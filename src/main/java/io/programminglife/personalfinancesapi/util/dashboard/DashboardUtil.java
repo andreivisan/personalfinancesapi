@@ -8,6 +8,7 @@ public class DashboardUtil {
     public static Transaction expenseTransaction(Expense expense) {
         Transaction transaction = new Transaction();
 
+        transaction.setTransactionId(expense.getId());
         transaction.setDate(expense.getExpenseDate());
         transaction.setDescription(expense.getLabel());
         transaction.setAmount(expense.getAmount());

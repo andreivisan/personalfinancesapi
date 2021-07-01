@@ -11,6 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Transaction {
 
+    private Long transactionId;
+
     private LocalDate date;
 
     private String description;

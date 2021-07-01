@@ -6,9 +6,16 @@ import EditableTable from './EditableTable';
 import { ACCESS_TOKEN } from '../constants';
 
 class UploadExpenses extends Component {
-    state = {
-        selectedFile: null,
-        csvEntities: null
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectedFile: null,
+            csvEntities: null
+        }
+
+        this.onFileChange = this.onFileChange.bind(this);
+        this.onFileUpload = this.onFileUpload.bind(this);
+        this.renderCSVEntities = this.renderCSVEntities.bind(this);
     }
 
     onFileChange = event => {
