@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.programminglife.personalfinancesapi.entity.Category;
+import io.programminglife.personalfinancesapi.entity.Expense;
 import io.programminglife.personalfinancesapi.entity.dashboard.PriceForCategory;
 import io.programminglife.personalfinancesapi.exception.MyFinancesException;
 import io.programminglife.personalfinancesapi.repository.CategoryRepository;
@@ -51,11 +52,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<PriceForCategory> findTotalMonthlyAmountPerCategory() {
+    public List<PriceForCategory> findTotalMonthlyAmountPerCategory(Long clientId) {
         List<PriceForCategory> totalMonthlyAmountPerCateogry = new ArrayList<>();
-        List<Category> categories = findAll();
+        List<Expense> clientExpenses = expenseRepository.findExpensesByClientEquals(clientId);
 
-        for (Category category : categories) {
+        for (Expense expense : clientExpenses) {
+            Category category = expense.getCategory();
             Long totalAmountForCategory = expenseRepository.findTotalAmountByCategory(category.getId());
             totalMonthlyAmountPerCateogry.add(new PriceForCategory(category.getLabel(), totalAmountForCategory));
         }

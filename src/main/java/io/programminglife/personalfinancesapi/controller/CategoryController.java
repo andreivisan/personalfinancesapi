@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import io.programminglife.personalfinancesapi.entity.Category;
 import io.programminglife.personalfinancesapi.entity.dashboard.PriceForCategory;
 import io.programminglife.personalfinancesapi.exception.MyFinancesException;
+import io.programminglife.personalfinancesapi.security.CurrentUser;
+import io.programminglife.personalfinancesapi.security.UserPrincipal;
 import io.programminglife.personalfinancesapi.service.CategoryService;
 
 @RestController
@@ -49,8 +51,9 @@ public class CategoryController {
     }
 
     @GetMapping("/totalMonthlyAmountPerCategory")
-    public ResponseEntity<List<PriceForCategory>> findTotalMonthlyAmountPerCategory() {
-        return ResponseEntity.ok().body(categoryService.findTotalMonthlyAmountPerCategory());
+    public ResponseEntity<List<PriceForCategory>> findTotalMonthlyAmountPerCategory(
+            @CurrentUser UserPrincipal currentUser) {
+        return ResponseEntity.ok().body(categoryService.findTotalMonthlyAmountPerCategory(currentUser.getId()));
     }
 
 }

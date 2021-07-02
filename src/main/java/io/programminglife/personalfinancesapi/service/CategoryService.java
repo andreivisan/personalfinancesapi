@@ -19,6 +19,6 @@ public interface CategoryService {
 
     Optional<Category> findCategoryByLabel(String label);
 
-    List<PriceForCategory> findTotalMonthlyAmountPerCategory();
+    List<PriceForCategory> findTotalMonthlyAmountPerCategory(Long clientId);
 
 }
