@@ -11,6 +11,8 @@ class Dashboard extends Component {
         this.state = {
             totalMonthlyAmountPerCategory: []
         }
+
+        this.categories = this.categories.bind(this)
     }
 
     componentDidMount() {
@@ -39,10 +41,6 @@ class Dashboard extends Component {
         })
     }
 
-    getTransactions() {
-        return <DataTable />
-    }
-
     render() {
         const totalMonthlyAmountPerCategory = this.state.totalMonthlyAmountPerCategory;
 
@@ -60,7 +58,7 @@ class Dashboard extends Component {
                 </div>
 
                 <div id="dataTable" class="text-sm text-gray-900 mt-20">
-                    {this.getTransactions()}
+                    <DataTable />
                 </div>
             </div>
         );

@@ -14,11 +14,13 @@ class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentUser: {}
+            currentUser: {},
+            csvEntities: null
         }
 
         this.handleLogout = this.handleLogout.bind(this);
         this.loadCurrentUser = this.loadCurrentUser.bind(this);
+        this.onCsvFileUpload = this.onCsvFileUpload.bind(this);
     }
 
     loadCurrentUser() {
@@ -35,6 +37,28 @@ class Dashboard extends Component {
                 console.log(error);
             })
     }
+
+    onCsvFileUpload(csvFile) {
+        const formData = new FormData();
+        const jwtToken = localStorage.getItem(ACCESS_TOKEN);
+
+        formData.append(
+            "expensesCsv",
+            csvFile
+        );
+
+        axios.post("api/v1/fileupload/", formData, {
+            headers: {
+                'Authorization': jwtToken
+            }
+        })
+            .then((response) => {
+                this.setState({ csvEntities: response.data })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
     
     componentDidMount() {
         this.loadCurrentUser();
@@ -52,7 +76,7 @@ class Dashboard extends Component {
                     <SideBar onLogout={this.handleLogout} currentUser={this.state.currentUser} />
 
                     <Switch>
-                        <Route path="/uploadExpenses" render={() => <UploadExpenses currentUser={this.state.currentUser} />} />
+                        <Route path="/uploadExpenses" render={() => <UploadExpenses currentUser={this.state.currentUser} onFileUpload={this.onCsvFileUpload} csvEntities={this.state.csvEntities}/>} />
                         <Route path="/overview" render={() => <ExpensesOverview currentUser={this.state.currentUser} />} />
                     </Switch>
                 </div>

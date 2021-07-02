@@ -9,8 +9,7 @@ class UploadExpenses extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedFile: null,
-            csvEntities: null
+            selectedFile: null
         }
 
         this.onFileChange = this.onFileChange.bind(this);
@@ -22,31 +21,13 @@ class UploadExpenses extends Component {
         this.setState({ selectedFile: event.target.files[0] });
     }
 
-    onFileUpload = () => {
-        const formData = new FormData();
-        const jwtToken = localStorage.getItem(ACCESS_TOKEN);
-
-        formData.append(
-            "expensesCsv",
-            this.state.selectedFile
-        );
-
-        axios.post("api/v1/fileupload/", formData, {
-            headers: {
-                'Authorization': jwtToken
-            }
-        })
-            .then((response) => {
-                this.setState({ csvEntities: response.data })
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+    onFileUpload() {
+        this.props.onFileUpload(this.state.selectedFile);
     };
 
     renderCSVEntities() {
-        if (this.state.csvEntities) {
-            return <EditableTable csvEntities={this.state.csvEntities} />
+        if (this.props.csvEntities) {
+            return <EditableTable csvEntities={this.props.csvEntities} />
         } else {
             return <></>
         }
