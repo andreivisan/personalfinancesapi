@@ -36,11 +36,12 @@ class Dashboard extends Component {
     }
 
     showCategories() {
-        return this.state.totalMonthlyAmountPerCategory.map(data => {
+        const totalAmountPerCategory = this.state.totalMonthlyAmountPerCategory;
+        return Object.keys(totalAmountPerCategory).map(function(key) {
             return (
                 <>
-                    <div class="col-span-2 text-gray-500">{data.category}</div>
-                    <div>{data.totalAmount} <span class="text-gray-500">&euro;</span></div>
+                    <div class="col-span-2 text-gray-500">{key}</div>
+                    <div>{totalAmountPerCategory[key]} <span class="text-gray-500">&euro;</span></div>
                 </>
             )
         })
