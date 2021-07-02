@@ -1,9 +1,12 @@
 package io.programminglife.personalfinancesapi.service;
 
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,26 +52,6 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findCategoryByLabel(label);
     }
 
-    // @Override
-    // public List<PriceForCategory> findTotalMonthlyAmountPerCategory(Long
-    // clientId) {
-    // List<PriceForCategory> totalMonthlyAmountPerCateogry = new ArrayList<>();
-    // List<Expense> clientExpenses =
-    // expenseRepository.findExpensesByClientEquals(clientId);
-
-    // for (Expense expense : clientExpenses) {
-    // Category category = expense.getCategory();
-    // Long totalAmountForCategory =
-    // expenseRepository.findTotalAmountByCategory(category.getId());
-    // totalMonthlyAmountPerCateogry.add(new PriceForCategory(category.getLabel(),
-    // totalAmountForCategory));
-    // }
-
-    // return totalMonthlyAmountPerCateogry.stream()
-    // .sorted(Comparator.comparingLong(PriceForCategory::getTotalAmount).reversed())
-    // .collect(Collectors.toList());
-    // }
-
     @Override
     public Map<String, Float> findTotalMonthlyAmountPerCategory(Long clientId) {
         Map<String, Float> totalMonthlyAmountPerCateogry = new HashMap<>();
@@ -83,7 +66,9 @@ public class CategoryServiceImpl implements CategoryService {
 
         }
 
-        return totalMonthlyAmountPerCateogry;
+        return totalMonthlyAmountPerCateogry.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).collect(Collectors.toMap(
+                        Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
     }
 
 }

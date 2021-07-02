@@ -44,7 +44,7 @@ class SideBar extends Component {
                             <Link to="/overview"> Expenses Overview </Link>
                         </p>
 
-                        <p class="block mb-2 py-2.5 px-4 rounded transition duration-200 hover:text-white">
+                        <p class="block mt-16 mb-2 py-2.5 px-4 rounded transition duration-200 hover:text-white">
                             <a href="" onClick={this.props.onLogout}> Logout </a>
                         </p>
                     </nav>
