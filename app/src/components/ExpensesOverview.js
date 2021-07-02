@@ -12,10 +12,15 @@ class Dashboard extends Component {
             totalMonthlyAmountPerCategory: []
         }
 
-        this.categories = this.categories.bind(this)
+        this.showCategories = this.showCategories.bind(this);
+        this.fetchCategories = this.fetchCategories.bind(this);
     }
 
     componentDidMount() {
+        this.fetchCategories();
+    }
+
+    fetchCategories() {
         const jwtToken = localStorage.getItem(ACCESS_TOKEN);
         axios.get('api/v1/categories/totalMonthlyAmountPerCategory', {
             headers: {
@@ -30,7 +35,7 @@ class Dashboard extends Component {
             })
     }
 
-    categories() {
+    showCategories() {
         return this.state.totalMonthlyAmountPerCategory.map(data => {
             return (
                 <>
@@ -52,13 +57,13 @@ class Dashboard extends Component {
                     <div class="bg-white p-6 rounded-lg shadow-lg">
                         <h2 class="text-2xl font-bold mb-2 text-gray-800">This month's expenses / category</h2>
                         <div class="grid grid-cols-3 gap-4 text-base mt-10">
-                            {this.categories()}
+                            {this.showCategories()}
                         </div>
                     </div>
                 </div>
 
                 <div id="dataTable" class="text-sm text-gray-900 mt-20">
-                    <DataTable />
+                    <DataTable onCategoryDelete={this.fetchCategories}/>
                 </div>
             </div>
         );

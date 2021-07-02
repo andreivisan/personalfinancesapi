@@ -87,6 +87,7 @@ class DataTable extends Component {
                                     if (response && response.status === 200) {
                                         resolve();
                                     }
+                                    this.props.onCategoryDelete();
                                 })
                                 .catch((error) => {
                                     console.log(error);
