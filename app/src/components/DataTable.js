@@ -41,7 +41,7 @@ class DataTable extends Component {
 
     componentDidMount() {
         const jwtToken = localStorage.getItem(ACCESS_TOKEN);
-        axios.get('api/v1/expenses/toTransactions', {
+        axios.get('api/v1/expenses/transactions', {
             headers: {
                 'Authorization': jwtToken
             }

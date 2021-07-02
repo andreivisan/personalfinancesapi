@@ -18,6 +18,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.programminglife.personalfinancesapi.entity.Category;
+import io.programminglife.personalfinancesapi.entity.Client;
 import io.programminglife.personalfinancesapi.entity.Expense;
 import io.programminglife.personalfinancesapi.entity.PaymentSystem;
 import io.programminglife.personalfinancesapi.entity.csv.CsvEntity;
@@ -68,7 +69,8 @@ public class CSVUtil {
         }
     }
 
-    public static Expense csvEntityToExpense(CsvEntity csvEntity, Category category, PaymentSystem paymentSystem) {
+    public static Expense csvEntityToExpense(CsvEntity csvEntity, Category category, PaymentSystem paymentSystem,
+            Client client) {
         Expense expense = new Expense();
 
         expense.setExpenseDate(csvEntity.getTransactionDate());
@@ -76,7 +78,7 @@ public class CSVUtil {
         expense.setAmount(csvEntity.getAmount());
         expense.setCategory(category);
         expense.setPaymentSystem(paymentSystem);
-        expense.setClient(null);
+        expense.setClient(client);
 
         return expense;
     }

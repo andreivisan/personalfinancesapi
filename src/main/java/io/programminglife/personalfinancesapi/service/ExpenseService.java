@@ -13,15 +13,17 @@ public interface ExpenseService {
 
     Expense findExpenseById(Long expenseId) throws MyFinancesException;
 
-    Expense saveExpense(CsvEntity csvEntity);
+    Expense saveExpense(CsvEntity csvEntity, Long clientId);
 
-    void deleteExpense(Long expenseId);
+    void deleteExpense(Long expenseId, Long clientId);
 
     List<Expense> findExpensesByLabelEquals(String label);
 
     List<Expense> findExpensesByCategoryEquals(Long categoryId);
 
     List<Expense> findExpensesByPaymentSystemEquals(Long paymentSystemId);
+
+    List<Transaction> findExpensesByClientEquals(Long clientId);
 
     List<Transaction> findAllTransactions();
 

@@ -20,6 +20,7 @@ public class FileUploadController {
 
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<List<CsvEntity>> uploadCsvFile(@RequestParam MultipartFile expensesCsv) {
+
         if (CSVUtil.hasCSVFormat(expensesCsv)) {
             try {
                 return ResponseEntity.ok().body(CSVUtil.parseCsvToEntity(expensesCsv.getInputStream()));

@@ -16,6 +16,8 @@ import io.programminglife.personalfinancesapi.entity.Expense;
 import io.programminglife.personalfinancesapi.entity.csv.CsvEntity;
 import io.programminglife.personalfinancesapi.entity.dashboard.Transaction;
 import io.programminglife.personalfinancesapi.exception.MyFinancesException;
+import io.programminglife.personalfinancesapi.security.CurrentUser;
+import io.programminglife.personalfinancesapi.security.UserPrincipal;
 import io.programminglife.personalfinancesapi.service.ExpenseService;
 
 @RestController
@@ -26,8 +28,8 @@ public class ExpenseController {
     private ExpenseService expenseService;
 
     @PostMapping("/save")
-    public ResponseEntity<Expense> save(@RequestBody CsvEntity csvEntity) {
-        return ResponseEntity.ok().body(expenseService.saveExpense(csvEntity));
+    public ResponseEntity<Expense> save(@RequestBody CsvEntity csvEntity, @CurrentUser UserPrincipal currentUser) {
+        return ResponseEntity.ok().body(expenseService.saveExpense(csvEntity, currentUser.getId()));
     }
 
     @GetMapping
@@ -45,8 +47,8 @@ public class ExpenseController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable(value = "id") Long id) {
-        expenseService.deleteExpense(id);
+    public void delete(@PathVariable(value = "id") Long id, @CurrentUser UserPrincipal currentUser) {
+        expenseService.deleteExpense(id, currentUser.getId());
     }
 
     @GetMapping("/label/{label}")
@@ -68,6 +70,11 @@ public class ExpenseController {
     @GetMapping("/toTransactions")
     public ResponseEntity<List<Transaction>> findAllTransactions() {
         return ResponseEntity.ok().body(expenseService.findAllTransactions());
+    }
+
+    @GetMapping("/transactions")
+    public ResponseEntity<List<Transaction>> findAllTransactionsForCurrentUser(@CurrentUser UserPrincipal currentUser) {
+        return ResponseEntity.ok().body(expenseService.findExpensesByClientEquals(currentUser.getId()));
     }
 
 }
