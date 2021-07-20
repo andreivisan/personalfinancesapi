@@ -21,3 +21,4 @@ At this moment the features are quite limited but I will extend them with time.
 - Monthly view for the list of expenses
 - Monthly view for the expenses per category
 - Adding charts
+- Add more unit testing
