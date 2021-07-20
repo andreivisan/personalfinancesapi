@@ -5,7 +5,7 @@ import DataTable from './DataTable';
 
 import { ACCESS_TOKEN } from '../constants';
 
-class Dashboard extends Component {
+class ExpensesOverview extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -71,4 +71,4 @@ class Dashboard extends Component {
     }
 }
 
-export default Dashboard;
+export default ExpensesOverview;
