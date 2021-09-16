@@ -1,5 +1,6 @@
 package io.programminglife.personalfinancesapi.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,5 +25,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
     @Query(value = "SELECT SUM(amount) FROM expense WHERE category_id = :categoryId", nativeQuery = true)
     Long findTotalAmountByCategory(@Param("categoryId") Long categoryId);
+
+    List<Expense> findAllByExpenseDateBetween(LocalDate startDate, LocalDate endDate);
 
 }

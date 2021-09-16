@@ -1,5 +1,6 @@
 package io.programminglife.personalfinancesapi.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -104,6 +105,11 @@ public class ExpenseServiceImpl implements ExpenseService {
         return findAll().stream().map(expense -> {
             return DashboardUtil.expenseTransaction(expense);
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Expense> findAllByExpenseDateBetween(LocalDate startDate, LocalDate endDate) {
+        return expenseRepository.findAllByExpenseDateBetween(startDate, endDate);
     }
 
 }
