@@ -77,4 +77,11 @@ public class ExpenseController {
         return ResponseEntity.ok().body(expenseService.findExpensesByClientEquals(currentUser.getId()));
     }
 
+    @GetMapping("/transactions/{year}/{month}")
+    public ResponseEntity<List<Transaction>> findAllTransactionsForCurrentUserByMonth(
+            @CurrentUser UserPrincipal currentUser, @PathVariable(value = "year") Integer year,
+            @PathVariable(value = "month") Integer month) {
+        return ResponseEntity.ok().body(expenseService.findAllByExpenseDateBetween(year, month, currentUser.getId()));
+    }
+
 }

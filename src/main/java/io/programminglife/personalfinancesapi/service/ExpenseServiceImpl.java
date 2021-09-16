@@ -108,8 +108,13 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public List<Expense> findAllByExpenseDateBetween(LocalDate startDate, LocalDate endDate) {
-        return expenseRepository.findAllByExpenseDateBetween(startDate, endDate);
+    public List<Transaction> findAllByExpenseDateBetween(Integer year, Integer month, Long clientId) {
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+        return expenseRepository.findAllByExpenseDateBetweenAndClientIdEquals(startDate, endDate, clientId).stream()
+                .map(expense -> {
+                    return DashboardUtil.expenseTransaction(expense);
+                }).collect(Collectors.toList());
     }
 
 }

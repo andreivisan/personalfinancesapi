@@ -26,6 +26,6 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     @Query(value = "SELECT SUM(amount) FROM expense WHERE category_id = :categoryId", nativeQuery = true)
     Long findTotalAmountByCategory(@Param("categoryId") Long categoryId);
 
-    List<Expense> findAllByExpenseDateBetween(LocalDate startDate, LocalDate endDate);
+    List<Expense> findAllByExpenseDateBetweenAndClientIdEquals(LocalDate startDate, LocalDate endDate, Long clientId);
 
 }

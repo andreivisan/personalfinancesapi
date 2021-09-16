@@ -1,6 +1,5 @@
 package io.programminglife.personalfinancesapi.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import io.programminglife.personalfinancesapi.entity.Expense;
@@ -28,6 +27,6 @@ public interface ExpenseService {
 
     List<Transaction> findAllTransactions();
 
-    List<Expense> findAllByExpenseDateBetween(LocalDate startDate, LocalDate endDate);
+    List<Transaction> findAllByExpenseDateBetween(Integer year, Integer month, Long clientId);
 
 }

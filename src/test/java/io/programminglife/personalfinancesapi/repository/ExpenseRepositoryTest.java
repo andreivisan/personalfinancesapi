@@ -34,7 +34,8 @@ public class ExpenseRepositoryTest {
 
     @Test
     public void test_save_expense() {
-        Expense testExpense = expenseRepository.save(createExpense());
+        Client client = createClient();
+        Expense testExpense = expenseRepository.save(createExpense(client));
 
         assertNotNull(testExpense);
         assertEquals(100L, testExpense.getAmount());
@@ -42,7 +43,8 @@ public class ExpenseRepositoryTest {
 
     @Test
     public void test_get_expense_by_id() {
-        Expense testExpense = expenseRepository.save(createExpense());
+        Client client = createClient();
+        Expense testExpense = expenseRepository.save(createExpense(client));
 
         Expense expense = expenseRepository.getById(testExpense.getId());
 
@@ -52,8 +54,9 @@ public class ExpenseRepositoryTest {
 
     @Test
     public void test_get_all_expenses() {
-        expenseRepository.save(createExpense());
-        expenseRepository.save(createExpense());
+        Client client = createClient();
+        expenseRepository.save(createExpense(client));
+        expenseRepository.save(createExpense(client));
 
         List<Expense> expenses = expenseRepository.findAll();
 
@@ -63,7 +66,8 @@ public class ExpenseRepositoryTest {
 
     @Test
     public void test_delete_expense_by_id() {
-        Expense expense = expenseRepository.save(createExpense());
+        Client client = createClient();
+        Expense expense = expenseRepository.save(createExpense(client));
 
         expenseRepository.deleteById(expense.getId());
 
@@ -74,7 +78,8 @@ public class ExpenseRepositoryTest {
 
     @Test
     public void test_get_expenses_by_label() {
-        expenseRepository.save(createExpense());
+        Client client = createClient();
+        expenseRepository.save(createExpense(client));
 
         List<Expense> expenses = expenseRepository.findExpensesByLabelEquals("Albert Heijn");
 
@@ -85,7 +90,8 @@ public class ExpenseRepositoryTest {
 
     @Test
     public void test_get_expense_by_category() {
-        Expense expense = expenseRepository.save(createExpense());
+        Client client = createClient();
+        Expense expense = expenseRepository.save(createExpense(client));
 
         List<Expense> expenses = expenseRepository.findExpensesByCategoryEquals(expense.getCategory().getId());
 
@@ -95,41 +101,45 @@ public class ExpenseRepositoryTest {
 
     @Test
     public void test_get_all_expenses_by_date_between() {
-        expenseRepository.save(createExpenseByDate(LocalDate.of(2021, 04, 21)));
-        expenseRepository.save(createExpenseByDate(LocalDate.of(2021, 04, 25)));
-        expenseRepository.save(createExpenseByDate(LocalDate.of(2021, 04, 29)));
+        Client client = createClient();
 
-        expenseRepository.save(createExpenseByDate(LocalDate.of(2021, 05, 26)));
-        expenseRepository.save(createExpenseByDate(LocalDate.of(2021, 05, 22)));
-        expenseRepository.save(createExpenseByDate(LocalDate.of(2021, 05, 25)));
+        expenseRepository.save(createExpenseByDate(client, LocalDate.of(2021, 04, 21)));
+        expenseRepository.save(createExpenseByDate(client, LocalDate.of(2021, 04, 25)));
+        expenseRepository.save(createExpenseByDate(client, LocalDate.of(2021, 04, 29)));
 
-        expenseRepository.save(createExpenseByDate(LocalDate.of(2021, 06, 01)));
-        expenseRepository.save(createExpenseByDate(LocalDate.of(2021, 06, 02)));
-        expenseRepository.save(createExpenseByDate(LocalDate.of(2021, 06, 03)));
+        expenseRepository.save(createExpenseByDate(client, LocalDate.of(2021, 05, 26)));
+        expenseRepository.save(createExpenseByDate(client, LocalDate.of(2021, 05, 22)));
+        expenseRepository.save(createExpenseByDate(client, LocalDate.of(2021, 05, 25)));
 
-        List<Expense> expenses = expenseRepository.findAllByExpenseDateBetween(LocalDate.of(2021, 04, 01),
-                LocalDate.of(2021, 05, 01));
+        expenseRepository.save(createExpenseByDate(client, LocalDate.of(2021, 06, 01)));
+        expenseRepository.save(createExpenseByDate(client, LocalDate.of(2021, 06, 02)));
+        expenseRepository.save(createExpenseByDate(client, LocalDate.of(2021, 06, 03)));
+
+        List<Expense> expenses = expenseRepository.findAllByExpenseDateBetweenAndClientIdEquals(
+                LocalDate.of(2021, 04, 01), LocalDate.of(2021, 05, 01), client.getId());
 
         assertNotNull(expenses);
         assertEquals(3, expenses.size());
     }
 
-    private Expense createExpense() {
-        return createExpenseByDate(LocalDate.now());
-    }
-
-    private Expense createExpenseByDate(LocalDate expenseDate) {
-        Category category = entityManager.persist(new Category("Groceries"));
-        PaymentSystem paymentSystem = entityManager.persist(new PaymentSystem("iDeal"));
-
+    private Client createClient() {
         Client client = new Client("andrei.m.visan@gmail.com", "1234");
         client.setName("name");
         client.setUsername("username");
-        Client savedClient = entityManager.persist(client);
+        return entityManager.persist(client);
+    }
+
+    private Expense createExpense(Client client) {
+        return createExpenseByDate(client, LocalDate.now());
+    }
+
+    private Expense createExpenseByDate(Client client, LocalDate expenseDate) {
+        Category category = entityManager.persist(new Category("Groceries"));
+        PaymentSystem paymentSystem = entityManager.persist(new PaymentSystem("iDeal"));
 
         Expense expense = new Expense();
         expense.setExpenseDate(expenseDate);
-        expense.setClient(savedClient);
+        expense.setClient(client);
         expense.setAmount(100f);
         expense.setCategory(category);
         expense.setLabel("Albert Heijn");
