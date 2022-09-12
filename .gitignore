@@ -32,3 +32,9 @@ build/
 ### VS Code ###
 .vscode/
 .pytest_cache/
+
+### OSX ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride

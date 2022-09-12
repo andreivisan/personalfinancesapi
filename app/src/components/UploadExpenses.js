@@ -1,9 +1,7 @@
-import axios from 'axios';
 import React, { Component } from 'react';
 
 import EditableTable from './EditableTable';
 
-import { ACCESS_TOKEN } from '../constants';
 
 class UploadExpenses extends Component {
     constructor(props) {

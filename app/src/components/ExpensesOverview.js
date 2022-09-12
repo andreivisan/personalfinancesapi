@@ -48,8 +48,6 @@ class ExpensesOverview extends Component {
     }
 
     render() {
-        const totalMonthlyAmountPerCategory = this.state.totalMonthlyAmountPerCategory;
-
         return (
             <div class="flex-1 p-10 text-2xl font-bold bg-gray-100">
                 <div class="text-2xl">EXPENSES OVERVIEW</div>
