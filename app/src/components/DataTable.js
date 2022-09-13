@@ -78,22 +78,20 @@ class DataTable extends Component {
                         const index = selectedRow.tableData.id;
                         const updatedRows = [...this.state.data];
                         updatedRows.splice(index, 1);
-                        setTimeout(() => {
-                            this.deleteExpenseFromDB(selectedRow.transactionId)
-                                .then((response) => {
-                                    this.setState({
-                                        data: updatedRows
-                                    })
-                                    if (response && response.status === 200) {
-                                        resolve();
-                                    }
-                                    this.props.onCategoryDelete();
+                        this.deleteExpenseFromDB(selectedRow.transactionId)
+                            .then((response) => {
+                                this.setState({
+                                    data: updatedRows
                                 })
-                                .catch((error) => {
-                                    console.log(error);
-                                    reject();
-                                });
-                        }, 2000)
+                                if (response && response.status === 200) {
+                                    resolve();
+                                }
+                                this.props.onCategoryDelete();
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                                reject();
+                            });
                     })
                 }}
             />

@@ -57,32 +57,28 @@ class EditableTable extends Component {
                         const index = selectedRow.tableData.id;
                         const updatedRows = [...this.state.data];
                         updatedRows.splice(index, 1);
-                        setTimeout(() => {
-                            this.setState({
-                                data: updatedRows
-                            })
-                            resolve()
-                        }, 2000)
+                        this.setState({
+                            data: updatedRows
+                        })
+                        resolve()
                     }),
                     onRowUpdate: (updatedRow, oldRow) => new Promise((resolve, reject) => {
                         const index = oldRow.tableData.id
                         const updatedRows = [...this.state.data]
                         updatedRows[index] = updatedRow
-                        setTimeout(() => {
-                            this.addExpenseToDB(updatedRow)
-                                .then((response) => {
-                                    this.setState({
-                                        data: updatedRows
-                                    })
-                                    if (response && response.status === 200) {
-                                        resolve();
-                                    }
+                        this.addExpenseToDB(updatedRow)
+                            .then((response) => {
+                                this.setState({
+                                    data: updatedRows
                                 })
-                                .catch((error) => {
-                                    console.log(error);
-                                    reject();
-                                });
-                        }, 2000)
+                                if (response && response.status === 200) {
+                                    resolve();
+                                }
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                                reject();
+                            });
                     })
                 }}
             />
