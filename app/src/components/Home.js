@@ -7,6 +7,7 @@ import PrivateRoute from './common/PrivateRoute';
 import Dashboard from './Dashboard';
 import RegisterForm from './RegisterForm';
 import { history } from './common/History';
+import ExpensesOverview from "./ExpensesOverview";
 
 
 class Home extends Component {
@@ -24,6 +25,8 @@ class Home extends Component {
                     <Route path="/login" exact component={LoginForm} />
                     <Route path="/register" exact component={RegisterForm} />
                     <PrivateRoute exact path="/" component={(props) => <Dashboard {...props} />} />
+                    <PrivateRoute exact path="/overview" component={(props) => <Dashboard {...props} />} />
+                    <PrivateRoute exact path="/uploadExpenses" component={(props) => <Dashboard {...props} />} />
                 </Switch>
             </Router>
         );
