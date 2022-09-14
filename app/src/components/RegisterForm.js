@@ -8,11 +8,14 @@ class RegisterForm extends Component {
             name: '',
             username: '',
             email: '',
-            password: ''
+            password: '',
+            primaryErrorMessage: '',
+            secondaryErrorMessage: ''
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.showErrorMessage = this.showErrorMessage.bind(this);
     }
 
     handleInputChange(event) {
@@ -32,9 +35,24 @@ class RegisterForm extends Component {
             .then((response) => {
                 this.props.history.push("/login")
             })
-            .catch(function (error) {
+            .catch((error) => {
                 console.log(error);
+                this.setState({
+                    primaryErrorMessage: "Registration Failed!",
+                    secondaryErrorMessage: "Username is already taken."
+                })
             });
+    }
+
+    showErrorMessage() {
+        if(this.state.primaryErrorMessage) {
+            return(
+                <div className="bg-red-100 mt-7 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <strong className="font-bold">{this.state.primaryErrorMessage}</strong>
+                    <span className="block sm:inline">{this.state.secondaryErrorMessage}</span>
+                </div>
+            )
+        }
     }
 
     render() {
@@ -48,6 +66,8 @@ class RegisterForm extends Component {
                         <h2 class="text-center font-semibold text-3xl lg:text-4xl text-gray-800">
                             Register
                         </h2>
+
+                        {this.showErrorMessage()}
 
                         <form class="mt-10" onSubmit={this.handleSubmit}>
                         <label for="name" class="block text-xs font-semibold text-gray-600 uppercase">Name</label>

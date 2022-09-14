@@ -8,11 +8,14 @@ class LoginForm extends Component {
         super(props);
         this.state = {
             usernameOrEmail: '',
-            password: ''
+            password: '',
+            primaryErrorMessage: '',
+            secondaryErrorMessage: ''
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.showErrorMessage = this.showErrorMessage.bind(this);
     }
 
     handleInputChange(event) {
@@ -34,14 +37,30 @@ class LoginForm extends Component {
                 localStorage.setItem(ACCESS_TOKEN, accessToken);
                 this.props.history.push('/');
             })
-            .catch(function (error) {
+            .catch((error) => {
                 console.log(error);
+                this.setState({
+                    primaryErrorMessage: "Login Failed!",
+                    secondaryErrorMessage: "Make sure your username or password are correct."
+                })
             });
+    }
+
+    showErrorMessage() {
+        if(this.state.primaryErrorMessage) {
+            return(
+                <div className="bg-red-100 mt-7 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <strong className="font-bold">{this.state.primaryErrorMessage}</strong>
+                    <span className="block sm:inline">{this.state.secondaryErrorMessage}</span>
+                </div>
+            )
+        }
     }
 
     render() {
         return (
             <div class="flex flex-col h-screen bg-gray-100">
+
                 <div class="grid place-items-center mx-2 my-20 sm:my-auto">
                     <div class="w-11/12 p-12 sm:w-8/12 md:w-6/12 lg:w-5/12 2xl:w-4/12 
                         px-6 py-10 sm:px-10 sm:py-6 
@@ -50,6 +69,8 @@ class LoginForm extends Component {
                         <h2 class="text-center font-semibold text-3xl lg:text-4xl text-gray-800">
                             Login
                         </h2>
+
+                        {this.showErrorMessage()}
 
                         <form class="mt-10" onSubmit={this.handleSubmit}>
                             <label for="usernameOrEmail" class="block text-xs font-semibold text-gray-600 uppercase">Username or E-mail</label>

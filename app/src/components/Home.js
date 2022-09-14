@@ -7,7 +7,6 @@ import PrivateRoute from './common/PrivateRoute';
 import Dashboard from './Dashboard';
 import RegisterForm from './RegisterForm';
 import { history } from './common/History';
-import ExpensesOverview from "./ExpensesOverview";
 
 
 class Home extends Component {
