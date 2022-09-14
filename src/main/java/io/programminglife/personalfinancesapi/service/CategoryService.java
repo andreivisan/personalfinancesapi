@@ -19,6 +19,6 @@ public interface CategoryService {
 
     Optional<Category> findCategoryByLabel(String label);
 
-    Map<String, Float> findTotalMonthlyAmountPerCategory(Long clientId);
+    Map<String, Float> findTotalMonthlyAmountPerCategory(Integer year, Integer month, Long clientId);
 
 }

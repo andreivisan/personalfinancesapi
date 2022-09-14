@@ -50,10 +50,11 @@ public class CategoryController {
         categoryService.deleteCategory(id);
     }
 
-    @GetMapping("/totalMonthlyAmountPerCategory")
+    @GetMapping("/totalMonthlyAmountPerCategory/{year}/{month}")
     public ResponseEntity<Map<String, Float>> findTotalMonthlyAmountPerCategory(
-            @CurrentUser UserPrincipal currentUser) {
-        return ResponseEntity.ok().body(categoryService.findTotalMonthlyAmountPerCategory(currentUser.getId()));
+            @CurrentUser UserPrincipal currentUser, @PathVariable(value = "year") Integer year,
+            @PathVariable(value = "month") Integer month) {
+        return ResponseEntity.ok().body(categoryService.findTotalMonthlyAmountPerCategory(year, month, currentUser.getId()));
     }
 
 }

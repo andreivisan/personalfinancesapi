@@ -1,5 +1,6 @@
 package io.programminglife.personalfinancesapi.service;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -8,6 +9,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import io.programminglife.personalfinancesapi.entity.dashboard.Transaction;
+import io.programminglife.personalfinancesapi.util.dashboard.DashboardUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,20 +56,27 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Map<String, Float> findTotalMonthlyAmountPerCategory(Long clientId) {
-        Map<String, Float> totalMonthlyAmountPerCateogry = new HashMap<>();
-        List<Expense> clientExpenses = expenseRepository.findExpensesByClientEquals(clientId);
+    public Map<String, Float> findTotalMonthlyAmountPerCategory(Integer year, Integer month, Long clientId) {
+        Map<String, Float> totalMonthlyAmountPerCategory = new HashMap<>();
 
-        for (Expense expense : clientExpenses) {
-            Category category = expense.getCategory();
-            Float expenseAmount = expense.getAmount();
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
 
-            totalMonthlyAmountPerCateogry.put(category.getLabel(),
-                    totalMonthlyAmountPerCateogry.getOrDefault(category.getLabel(), 0f) + expenseAmount);
+        List<Transaction> clientExpenses = expenseRepository.findAllByExpenseDateBetweenAndClientIdEquals(startDate, endDate, clientId).stream()
+                .map(expense -> {
+                    return DashboardUtil.expenseTransaction(expense);
+                }).collect(Collectors.toList());
+
+        for (Transaction transaction : clientExpenses) {
+            String category = transaction.getCategory();
+            Float expenseAmount = transaction.getAmount();
+
+            totalMonthlyAmountPerCategory.put(category,
+                    totalMonthlyAmountPerCategory.getOrDefault(category, 0f) + expenseAmount);
 
         }
 
-        return totalMonthlyAmountPerCateogry.entrySet().stream()
+        return totalMonthlyAmountPerCategory.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).collect(Collectors.toMap(
                         Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
     }
