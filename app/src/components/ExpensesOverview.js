@@ -100,24 +100,24 @@ class ExpensesOverview extends Component {
 
     showCategories() {
         const totalAmountPerCategory = this.state.totalMonthlyAmountPerCategory;
-        // const currentMonth = this.state.month
-        // const monthName = months.filter(month => {
-        //     return month.value = currentMonth;
-        // });
-        const monthName = "bla"
-        return Object.keys(totalAmountPerCategory).map(function(key) {
-            return (
-                <div className="mt-20">
+
+        return (
+            <div className="mt-20">
+                {Object.keys(totalAmountPerCategory).length > 0 &&
                     <div className="bg-white p-6 rounded-lg shadow-lg">
-                        <h2 className="text-2xl font-bold mb-2 text-gray-800">{monthName} total expenses / category</h2>
-                        <div className="grid grid-cols-3 gap-4 text-base mt-10">
-                            <div className="col-span-2 text-gray-500" key={key}>{key}</div>
-                            <div>{totalAmountPerCategory[key]} <span className="text-gray-500">&euro;</span></div>
-                        </div>
+                            <h2 className="text-2xl font-bold mb-2 text-gray-800">Total expenses / category for selected month</h2>
+                            <div className="grid grid-cols-3 gap-4 text-base mt-10">
+                                {Object.keys(totalAmountPerCategory).map((key) => (
+                                    <>
+                                        <div className="col-span-2 text-gray-500" key={key}>{key}</div>
+                                        <div>{totalAmountPerCategory[key]} <span className="text-gray-500">&euro;</span></div>
+                                    </>
+                                ))}
+                            </div>
                     </div>
-                </div>
-            )
-        })
+                }
+            </div>
+        )
     }
 
     render() {
