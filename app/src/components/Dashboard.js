@@ -4,10 +4,12 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import SideBar from './SideBar';
 import UploadExpenses from './UploadExpenses';
 import ExpensesOverview from './ExpensesOverview';
+import LineChart from "./LineChart";
 import { history } from './common/History';
 import axios from 'axios';
 
 import { ACCESS_TOKEN } from "../constants";
+import DashboardContent from "./DashboardContent";
 
 
 class Dashboard extends Component {
@@ -76,6 +78,7 @@ class Dashboard extends Component {
                     <SideBar onLogout={this.handleLogout} currentUser={this.state.currentUser} />
 
                     <Switch>
+                        <Route exact path="/" render={() => <DashboardContent currentUser={this.state.currentUser} />} />
                         <Route path="/uploadExpenses" render={() => <UploadExpenses currentUser={this.state.currentUser} onFileUpload={this.onCsvFileUpload} csvEntities={this.state.csvEntities}/>} />
                         <Route path="/overview" render={() => <ExpensesOverview currentUser={this.state.currentUser} />} />
                     </Switch>
