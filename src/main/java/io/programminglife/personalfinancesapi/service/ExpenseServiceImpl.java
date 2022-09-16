@@ -1,7 +1,10 @@
 package io.programminglife.personalfinancesapi.service;
 
 import java.time.LocalDate;
+import java.time.Month;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -95,16 +98,12 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public List<Transaction> findExpensesByClientEquals(Long clientId) {
-        return expenseRepository.findExpensesByClientEquals(clientId).stream().map(expense -> {
-            return DashboardUtil.expenseTransaction(expense);
-        }).collect(Collectors.toList());
+        return expenseRepository.findExpensesByClientEquals(clientId).stream().map(expense -> DashboardUtil.expenseTransaction(expense)).collect(Collectors.toList());
     }
 
     @Override
     public List<Transaction> findAllTransactions() {
-        return findAll().stream().map(expense -> {
-            return DashboardUtil.expenseTransaction(expense);
-        }).collect(Collectors.toList());
+        return findAll().stream().map(expense -> DashboardUtil.expenseTransaction(expense)).collect(Collectors.toList());
     }
 
     @Override
@@ -112,9 +111,29 @@ public class ExpenseServiceImpl implements ExpenseService {
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
         return expenseRepository.findAllByExpenseDateBetweenAndClientIdEquals(startDate, endDate, clientId).stream()
-                .map(expense -> {
-                    return DashboardUtil.expenseTransaction(expense);
-                }).collect(Collectors.toList());
+                .map(expense -> DashboardUtil.expenseTransaction(expense)).collect(Collectors.toList());
     }
+
+    @Override
+    public Map<String, Float> findTotalExpensesForCategoryGroupByMonth(String categoryLabel, Long clientId) {
+        Map<String, Float> result = new HashMap<>();
+
+        Optional<Category> currentCategoryOpt = categoryService.findCategoryByLabel(categoryLabel);
+        if (currentCategoryOpt.isPresent()) {
+            Category currentCategory = currentCategoryOpt.get();
+            List<Transaction> clientExpenses = expenseRepository.findAllByCategoryIdEqualsAndClientIdEquals(currentCategory.getId(), clientId).stream()
+                    .map(expense -> DashboardUtil.expenseTransaction(expense)).collect(Collectors.toList());
+
+            for (Transaction tx : clientExpenses) {
+                String txMonth = tx.getDate().getMonth().name();
+                Float txAmount = tx.getAmount();
+
+                result.put(txMonth, result.getOrDefault(txMonth, 0f) + txAmount);
+            }
+        }
+
+        return result;
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package io.programminglife.personalfinancesapi.service;
 
 import java.util.List;
+import java.util.Map;
 
 import io.programminglife.personalfinancesapi.entity.Expense;
 import io.programminglife.personalfinancesapi.entity.csv.CsvEntity;
@@ -28,5 +29,7 @@ public interface ExpenseService {
     List<Transaction> findAllTransactions();
 
     List<Transaction> findAllByExpenseDateBetween(Integer year, Integer month, Long clientId);
+
+    Map<String, Float> findTotalExpensesForCategoryGroupByMonth(String categoryLabel, Long clientId);
 
 }

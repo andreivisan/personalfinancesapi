@@ -1,6 +1,7 @@
 package io.programminglife.personalfinancesapi.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -84,4 +85,10 @@ public class ExpenseController {
         return ResponseEntity.ok().body(expenseService.findAllByExpenseDateBetween(year, month, currentUser.getId()));
     }
 
+    @GetMapping("/totals/{category}")
+    public ResponseEntity<Map<String, Float>> findTotalExpensesForCategoryGroupByMonth(
+        @CurrentUser UserPrincipal currentUser, @PathVariable(value = "category") String categoryLabel
+    ) {
+        return ResponseEntity.ok().body(expenseService.findTotalExpensesForCategoryGroupByMonth(categoryLabel, currentUser.getId()));
+    }
 }

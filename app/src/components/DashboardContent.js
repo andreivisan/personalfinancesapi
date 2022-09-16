@@ -27,7 +27,7 @@ class DashboardContent extends Component {
         })
             .then(response => {
                 this.setState({ totalAmountPerCategoryGroupByMonth: response.data });
-                
+
             })
             .catch(function (error) {
                 console.log(error);
