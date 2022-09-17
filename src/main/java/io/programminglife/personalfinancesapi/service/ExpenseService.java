@@ -5,6 +5,7 @@ import java.util.Map;
 
 import io.programminglife.personalfinancesapi.entity.Expense;
 import io.programminglife.personalfinancesapi.entity.csv.CsvEntity;
+import io.programminglife.personalfinancesapi.entity.dashboard.PriceForCategoryGroupByMonth;
 import io.programminglife.personalfinancesapi.entity.dashboard.Transaction;
 import io.programminglife.personalfinancesapi.exception.MyFinancesException;
 
@@ -30,6 +31,6 @@ public interface ExpenseService {
 
     List<Transaction> findAllByExpenseDateBetween(Integer year, Integer month, Long clientId);
 
-    Map<String, Float> findTotalExpensesForCategoryGroupByMonth(String categoryLabel, Long clientId);
+    List<PriceForCategoryGroupByMonth> findTotalExpensesForCategoryGroupByMonth(String categoryLabel, Long clientId);
 
 }

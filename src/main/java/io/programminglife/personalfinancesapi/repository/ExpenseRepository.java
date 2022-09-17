@@ -28,6 +28,6 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
     List<Expense> findAllByExpenseDateBetweenAndClientIdEquals(LocalDate startDate, LocalDate endDate, Long clientId);
 
-    List<Expense> findAllByCategoryIdEqualsAndClientIdEquals(Long categoryId, Long clientId);
+    List<Expense> findAllByCategoryIdEqualsAndClientIdEqualsOrderByExpenseDateAsc(Long categoryId, Long clientId);
 
 }

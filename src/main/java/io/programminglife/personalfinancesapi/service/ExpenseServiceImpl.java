@@ -2,12 +2,10 @@ package io.programminglife.personalfinancesapi.service;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import io.programminglife.personalfinancesapi.entity.dashboard.PriceForCategoryGroupByMonth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -115,20 +113,29 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public Map<String, Float> findTotalExpensesForCategoryGroupByMonth(String categoryLabel, Long clientId) {
-        Map<String, Float> result = new HashMap<>();
+    public List<PriceForCategoryGroupByMonth> findTotalExpensesForCategoryGroupByMonth(String categoryLabel, Long clientId) {
+        List<PriceForCategoryGroupByMonth> result = new ArrayList<>();
 
         Optional<Category> currentCategoryOpt = categoryService.findCategoryByLabel(categoryLabel);
         if (currentCategoryOpt.isPresent()) {
             Category currentCategory = currentCategoryOpt.get();
-            List<Transaction> clientExpenses = expenseRepository.findAllByCategoryIdEqualsAndClientIdEquals(currentCategory.getId(), clientId).stream()
+            List<Transaction> clientExpenses = expenseRepository.findAllByCategoryIdEqualsAndClientIdEqualsOrderByExpenseDateAsc(currentCategory.getId(), clientId).stream()
                     .map(expense -> DashboardUtil.expenseTransaction(expense)).collect(Collectors.toList());
 
             for (Transaction tx : clientExpenses) {
                 String txMonth = tx.getDate().getMonth().name();
                 Float txAmount = tx.getAmount();
 
-                result.put(txMonth, result.getOrDefault(txMonth, 0f) + txAmount);
+                Optional<PriceForCategoryGroupByMonth> recordOpt = DashboardUtil.containsTransactionForMonth(result, txMonth);
+
+                if (!result.isEmpty() && recordOpt.isPresent()) {
+                    PriceForCategoryGroupByMonth record = recordOpt.get();
+                    result.remove(record);
+                    record.setAmount(record.getAmount() + txAmount);
+                    result.add(record);
+                } else {
+                    result.add(new PriceForCategoryGroupByMonth(categoryLabel, txAmount, txMonth));
+                }
             }
         }
 

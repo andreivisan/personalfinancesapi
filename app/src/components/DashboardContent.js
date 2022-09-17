@@ -7,11 +7,11 @@ class DashboardContent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            totalAmountPerCategoryGroupByMonth: [],
-            chartData: {}
+            test: []
         }
 
         this.fetchTotals = this.fetchTotals.bind(this);
+        this.showLineChart = this.showLineChart.bind(this);
     }
 
     componentDidMount() {
@@ -26,18 +26,45 @@ class DashboardContent extends Component {
             }
         })
             .then(response => {
-                this.setState({ totalAmountPerCategoryGroupByMonth: response.data });
-
+                this.setState({ test: response.data });
             })
             .catch(function (error) {
                 console.log(error);
             })
     }
 
+    showLineChart() {
+        const allMonths = this.state.test;
+        if (allMonths.length > 0) {
+            const chartData = {
+                labels: allMonths.map((data) => data.month),
+                datasets: [
+                    {
+                        label: "Monthly Expenses for Groceries",
+                        data: allMonths.map((data) => data.amount),
+                        backgroundColor: "#111827",
+                        borderColor: "#111827",
+                        borderWidth: 2,
+                    }
+                ]
+            }
+
+            console.log(chartData)
+
+            return (
+                <LineChart chartData={chartData} />
+            )
+        } else {
+            return (
+                <></>
+            )
+        }
+    }
+
     render() {
         return (
             <div className="flex-1 p-10 text-2xl font-bold bg-gray-100">
-                <LineChart chartData={this.state.totalAmountPerCategoryGroupByMonth} />
+                {this.showLineChart()}
             </div>
         );
     }

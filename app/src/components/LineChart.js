@@ -8,7 +8,7 @@ class LineChart extends Component {
     }
 
     render() {
-        return <Line data={this.props.data} />
+        return <Line data={this.props.chartData} />
     }
 }
 
