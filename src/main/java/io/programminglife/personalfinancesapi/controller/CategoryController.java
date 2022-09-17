@@ -3,6 +3,7 @@ package io.programminglife.personalfinancesapi.controller;
 import java.util.List;
 import java.util.Map;
 
+import io.programminglife.personalfinancesapi.entity.dashboard.PriceForCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,7 +52,7 @@ public class CategoryController {
     }
 
     @GetMapping("/totalMonthlyAmountPerCategory/{year}/{month}")
-    public ResponseEntity<Map<String, Float>> findTotalMonthlyAmountPerCategory(
+    public ResponseEntity<List<PriceForCategory>> findTotalMonthlyAmountPerCategory(
             @CurrentUser UserPrincipal currentUser, @PathVariable(value = "year") Integer year,
             @PathVariable(value = "month") Integer month) {
         return ResponseEntity.ok().body(categoryService.findTotalMonthlyAmountPerCategory(year, month, currentUser.getId()));

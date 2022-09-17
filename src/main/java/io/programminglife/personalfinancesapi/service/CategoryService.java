@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import io.programminglife.personalfinancesapi.entity.Category;
+import io.programminglife.personalfinancesapi.entity.dashboard.PriceForCategory;
 import io.programminglife.personalfinancesapi.exception.MyFinancesException;
 
 public interface CategoryService {
@@ -19,6 +20,6 @@ public interface CategoryService {
 
     Optional<Category> findCategoryByLabel(String label);
 
-    Map<String, Float> findTotalMonthlyAmountPerCategory(Integer year, Integer month, Long clientId);
+    List<PriceForCategory> findTotalMonthlyAmountPerCategory(Integer year, Integer month, Long clientId);
 
 }

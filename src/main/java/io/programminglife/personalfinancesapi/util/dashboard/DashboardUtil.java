@@ -1,6 +1,7 @@
 package io.programminglife.personalfinancesapi.util.dashboard;
 
 import io.programminglife.personalfinancesapi.entity.Expense;
+import io.programminglife.personalfinancesapi.entity.dashboard.PriceForCategory;
 import io.programminglife.personalfinancesapi.entity.dashboard.PriceForCategoryGroupByMonth;
 import io.programminglife.personalfinancesapi.entity.dashboard.Transaction;
 
@@ -24,6 +25,10 @@ public class DashboardUtil {
 
     public static Optional<PriceForCategoryGroupByMonth> containsTransactionForMonth(List<PriceForCategoryGroupByMonth> input, String month) {
         return input.stream().filter(record -> record.getMonth().equals(month)).findFirst();
+    }
+
+    public static Optional<PriceForCategory> containsTransactionForCategory(List<PriceForCategory> input, String category) {
+        return input.stream().filter(record -> record.getCategory().equals(category)).findFirst();
     }
 
 }

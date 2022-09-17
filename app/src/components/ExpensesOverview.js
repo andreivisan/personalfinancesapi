@@ -103,16 +103,20 @@ class ExpensesOverview extends Component {
 
         return (
             <div className="mt-20">
-                {Object.keys(totalAmountPerCategory).length > 0 &&
+                {totalAmountPerCategory.length > 0 &&
                     <div className="bg-white p-6 rounded-lg shadow-lg">
                             <h2 className="text-2xl font-bold mb-2 text-gray-800">Total expenses / category for selected month</h2>
                             <div className="grid grid-cols-3 gap-4 text-base mt-10">
-                                {Object.keys(totalAmountPerCategory).map((key) => (
-                                    <>
-                                        <div className="col-span-2 text-gray-500" key={key}>{key}</div>
-                                        <div>{totalAmountPerCategory[key]} <span className="text-gray-500">&euro;</span></div>
-                                    </>
-                                ))}
+                                {totalAmountPerCategory.map(record => {
+                                    return (
+                                        <>
+                                            <div className="col-span-2 text-gray-500"
+                                                 key={record.category}>{record.category}</div>
+                                            <div>{record.totalAmount} <span className="text-gray-500">&euro;</span>
+                                            </div>
+                                        </>
+                                    );
+                                })}
                             </div>
                     </div>
                 }

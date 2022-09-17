@@ -12,27 +12,19 @@ public class PriceForCategoryGroupByMonth {
         this.month = month;
     }
 
-    public String getCategory() {
-        return category;
+    public void setAmount(Float amount) {
+        this.amount = amount;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public String getCategory() {
+        return category;
     }
 
     public Float getAmount() {
         return amount;
     }
 
-    public void setAmount(Float amount) {
-        this.amount = amount;
-    }
-
     public String getMonth() {
         return month;
-    }
-
-    public void setMonth(String month) {
-        this.month = month;
     }
 }

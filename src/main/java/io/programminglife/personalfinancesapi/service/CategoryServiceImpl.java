@@ -1,14 +1,11 @@
 package io.programminglife.personalfinancesapi.service;
 
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import io.programminglife.personalfinancesapi.entity.dashboard.PriceForCategory;
+import io.programminglife.personalfinancesapi.entity.dashboard.PriceForCategoryGroupByMonth;
 import io.programminglife.personalfinancesapi.entity.dashboard.Transaction;
 import io.programminglife.personalfinancesapi.util.dashboard.DashboardUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +53,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Map<String, Float> findTotalMonthlyAmountPerCategory(Integer year, Integer month, Long clientId) {
-        Map<String, Float> totalMonthlyAmountPerCategory = new HashMap<>();
+    public List<PriceForCategory> findTotalMonthlyAmountPerCategory(Integer year, Integer month, Long clientId) {
+        List<PriceForCategory> totalMonthlyAmountPerCategory = new ArrayList<>();
 
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
@@ -71,14 +68,23 @@ public class CategoryServiceImpl implements CategoryService {
             String category = transaction.getCategory();
             Float expenseAmount = transaction.getAmount();
 
-            totalMonthlyAmountPerCategory.put(category,
-                    totalMonthlyAmountPerCategory.getOrDefault(category, 0f) + expenseAmount);
+            Optional<PriceForCategory> recordOpt = DashboardUtil.containsTransactionForCategory(totalMonthlyAmountPerCategory, category);
+
+            if (!totalMonthlyAmountPerCategory.isEmpty() && recordOpt.isPresent()) {
+                PriceForCategory record = recordOpt.get();
+                totalMonthlyAmountPerCategory.remove(record);
+                record.setTotalAmount(record.getTotalAmount() + expenseAmount);
+                totalMonthlyAmountPerCategory.add(record);
+            } else {
+                totalMonthlyAmountPerCategory.add(new PriceForCategory(category, expenseAmount));
+            }
 
         }
 
-        return totalMonthlyAmountPerCategory.entrySet().stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).collect(Collectors.toMap(
-                        Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+        Collections.sort(totalMonthlyAmountPerCategory);
+        Collections.reverse(totalMonthlyAmountPerCategory);
+
+        return totalMonthlyAmountPerCategory;
     }
 
 }
