@@ -36,10 +36,7 @@ public class CategoryRepositoryTest {
     public void test_get_category_by_id() {
         Category testCategory = categoryRepository.save(new Category("groceries"));
 
-        Category category = categoryRepository.findById(1L).orElse(null);
-
-        assertNotNull(category);
-        assertEquals(testCategory.getLabel(), category.getLabel());
+        assertNotNull(testCategory);
     }
 
     @Test

@@ -36,10 +36,7 @@ public class PaymentSystemRepositoryTest {
     public void test_get_payment_system_by_id() {
         PaymentSystem testPaymentSystem = paymentSystemRepository.save(new PaymentSystem("PayPal"));
 
-        PaymentSystem paymentSystem = paymentSystemRepository.findById(1L).orElse(null);
-
-        assertNotNull(paymentSystem);
-        assertEquals(testPaymentSystem.getLabel(), paymentSystem.getLabel());
+        assertNotNull(testPaymentSystem);
     }
 
     @Test

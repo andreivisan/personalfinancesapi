@@ -26,7 +26,7 @@ public class UserRepositoryTest {
 
     @Test
     public void test_save_client() {
-        Client testClient = clientRepository.save(new Client("test@test.com", "1234"));
+        Client testClient = clientRepository.save(new Client("Test", "test", "test@test.com", "1234"));
 
         assertNotNull(testClient);
         assertEquals("1234", testClient.getPassword());
@@ -34,7 +34,7 @@ public class UserRepositoryTest {
 
     @Test
     public void test_get_client_by_id() {
-        Client testClient = clientRepository.save(new Client("test@test.com", "1234"));
+        Client testClient = clientRepository.save(new Client("Test", "test", "test@test.com", "1234"));
 
         Client client = clientRepository.findById(testClient.getId()).orElse(null);
 
@@ -44,8 +44,8 @@ public class UserRepositoryTest {
 
     @Test
     public void test_get_all_clients() {
-        clientRepository.save(new Client("test@test.com", "1234"));
-        clientRepository.save(new Client("test1@test.com", "1235"));
+        clientRepository.save(new Client("Test", "test", "test@test.com", "1234"));
+        clientRepository.save(new Client("Test1", "test1", "test1@test.com", "1235"));
 
         List<Client> clients = clientRepository.findAll();
 
@@ -55,7 +55,7 @@ public class UserRepositoryTest {
 
     @Test
     public void test_delete_client_by_id() {
-        Client testClient = clientRepository.save(new Client("test@test.com", "1234"));
+        Client testClient = clientRepository.save(new Client("Test", "test", "test@test.com", "1234"));
 
         clientRepository.deleteById(testClient.getId());
 
