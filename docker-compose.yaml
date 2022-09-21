@@ -9,13 +9,14 @@ services:
         POSTGRES_PASSWORD: ${MY_FINANCES_DB_PASSWORD}
         POSTGRES_DB: MY_FINANCES
       volumes:
-        - personal-finances-db:/var/lib/postgresql/data
+        - personal-finances-db:/var/lib/postgresql/data:rw
     api:
       build: .
       environment:
         MY_FINANCES_DB_USERNAME: ${MY_FINANCES_DB_USERNAME}
         MY_FINANCES_DB_PASSWORD: ${MY_FINANCES_DB_PASSWORD}
         SPRING.PROFILES.ACTIVE: prod
+        SPRING_JPA_HIBERNATE_DDL_AUTO: update
       container_name: personal-finances-api
       ports:
         - "8080:8080"
