@@ -1,21 +1,16 @@
 package io.programminglife.personalfinancesapi.service;
 
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import io.programminglife.personalfinancesapi.entity.dashboard.PriceForCategory;
-import io.programminglife.personalfinancesapi.entity.dashboard.PriceForCategoryGroupByMonth;
-import io.programminglife.personalfinancesapi.entity.dashboard.Transaction;
-import io.programminglife.personalfinancesapi.util.dashboard.DashboardUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import io.programminglife.personalfinancesapi.entity.Category;
-import io.programminglife.personalfinancesapi.entity.Expense;
+import io.programminglife.personalfinancesapi.entity.dashboard.TotalAmountForCategory;
 import io.programminglife.personalfinancesapi.exception.MyFinancesException;
 import io.programminglife.personalfinancesapi.repository.CategoryRepository;
 import io.programminglife.personalfinancesapi.repository.ExpenseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -53,38 +48,16 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<PriceForCategory> findTotalMonthlyAmountPerCategory(Integer year, Integer month, Long clientId) {
-        List<PriceForCategory> totalMonthlyAmountPerCategory = new ArrayList<>();
-
+    public List<TotalAmountForCategory> findTotalMonthlyAmountPerCategory(Integer year, Integer month, Long clientId) throws MyFinancesException {
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
 
-        List<Transaction> clientExpenses = expenseRepository.findAllByExpenseDateBetweenAndClientIdEquals(startDate, endDate, clientId).stream()
-                .map(expense -> {
-                    return DashboardUtil.expenseTransaction(expense);
-                }).collect(Collectors.toList());
-
-        for (Transaction transaction : clientExpenses) {
-            String category = transaction.getCategory();
-            Float expenseAmount = transaction.getAmount();
-
-            Optional<PriceForCategory> recordOpt = DashboardUtil.containsTransactionForCategory(totalMonthlyAmountPerCategory, category);
-
-            if (!totalMonthlyAmountPerCategory.isEmpty() && recordOpt.isPresent()) {
-                PriceForCategory record = recordOpt.get();
-                totalMonthlyAmountPerCategory.remove(record);
-                record.setTotalAmount(record.getTotalAmount() + expenseAmount);
-                totalMonthlyAmountPerCategory.add(record);
-            } else {
-                totalMonthlyAmountPerCategory.add(new PriceForCategory(category, expenseAmount));
-            }
-
+        Optional<List<TotalAmountForCategory>> totalMonthlyAmountPerCategory = categoryRepository.findTotalAmountForCategoryPerUser(startDate, endDate, clientId);
+        if (totalMonthlyAmountPerCategory.isPresent()) {
+            return totalMonthlyAmountPerCategory.get();
+        } else {
+            throw new MyFinancesException("Something went wrong with the query!");
         }
-
-        Collections.sort(totalMonthlyAmountPerCategory);
-        Collections.reverse(totalMonthlyAmountPerCategory);
-
-        return totalMonthlyAmountPerCategory;
     }
 
 }
