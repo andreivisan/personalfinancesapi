@@ -57,11 +57,11 @@ class DashboardContent extends Component {
         const allCategories = this.state.top7ExpenseCategories;
         if (allMonths.length > 0 && allCategories.length > 0) {
             const chartData = {
-                labels: allMonths.map((data) => data.month),
+                labels: allMonths.map((data) => data.expenseDate.trim()),
                 datasets: [
                     {
                         label: "2022",
-                        data: allMonths.map((data) => data.amount),
+                        data: allMonths.map((data) => data.total),
                         borderColor: "#111827",
                         borderWidth: 2,
                     }

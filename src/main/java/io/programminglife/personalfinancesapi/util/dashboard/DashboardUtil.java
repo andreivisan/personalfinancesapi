@@ -2,7 +2,7 @@ package io.programminglife.personalfinancesapi.util.dashboard;
 
 import io.programminglife.personalfinancesapi.entity.Expense;
 import io.programminglife.personalfinancesapi.entity.dashboard.TotalAmountForCategory;
-import io.programminglife.personalfinancesapi.entity.dashboard.PriceForCategoryGroupByMonth;
+import io.programminglife.personalfinancesapi.entity.dashboard.TotalAmountForCategoryGroupByMonth;
 import io.programminglife.personalfinancesapi.entity.dashboard.Transaction;
 
 import java.util.List;
@@ -21,14 +21,6 @@ public class DashboardUtil {
         transaction.setPaymentSystem(expense.getPaymentSystem().getLabel());
 
         return transaction;
-    }
-
-    public static Optional<PriceForCategoryGroupByMonth> containsTransactionForMonth(List<PriceForCategoryGroupByMonth> input, String month) {
-        return input.stream().filter(record -> record.getMonth().equals(month)).findFirst();
-    }
-
-    public static Optional<TotalAmountForCategory> containsTransactionForCategory(List<TotalAmountForCategory> input, String category) {
-        return input.stream().filter(record -> record.getCategory().equals(category)).findFirst();
     }
 
 }

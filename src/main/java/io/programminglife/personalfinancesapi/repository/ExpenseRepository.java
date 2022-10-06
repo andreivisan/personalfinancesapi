@@ -2,7 +2,9 @@ package io.programminglife.personalfinancesapi.repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
+import io.programminglife.personalfinancesapi.entity.dashboard.TotalAmountForCategoryGroupByMonth;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,7 +29,10 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     Long findTotalAmountByCategory(@Param("categoryId") Long categoryId);
 
     List<Expense> findAllByExpenseDateBetweenAndClientIdEquals(LocalDate startDate, LocalDate endDate, Long clientId);
-
-    List<Expense> findAllByCategoryIdEqualsAndClientIdEqualsOrderByExpenseDateAsc(Long categoryId, Long clientId);
+    @Query(value = "SELECT c.label as category, SUM(e.amount) as total, TO_CHAR(e.expense_date, 'Month') as expenseDate " +
+            "FROM category c JOIN expense e ON c.id = e.category_id " +
+            "WHERE e.client_id = :userId AND c.id = :categoryId " +
+            "GROUP BY category, expenseDate", nativeQuery = true)
+    Optional<List<TotalAmountForCategoryGroupByMonth>> findTotalAmountPerCategoryGroupByMonth(Long categoryId, Long userId);
 
 }

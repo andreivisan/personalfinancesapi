@@ -4,7 +4,6 @@ import io.programminglife.personalfinancesapi.entity.Category;
 import io.programminglife.personalfinancesapi.entity.dashboard.TotalAmountForCategory;
 import io.programminglife.personalfinancesapi.exception.MyFinancesException;
 import io.programminglife.personalfinancesapi.repository.CategoryRepository;
-import io.programminglife.personalfinancesapi.repository.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +16,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
-
-    @Autowired
-    private ExpenseRepository expenseRepository;
 
     @Override
     public List<Category> findAll() {

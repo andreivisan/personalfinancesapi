@@ -1,11 +1,10 @@
 package io.programminglife.personalfinancesapi.service;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import io.programminglife.personalfinancesapi.entity.dashboard.PriceForCategoryGroupByMonth;
+import io.programminglife.personalfinancesapi.entity.dashboard.TotalAmountForCategoryGroupByMonth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +18,7 @@ import io.programminglife.personalfinancesapi.exception.MyFinancesException;
 import io.programminglife.personalfinancesapi.repository.ExpenseRepository;
 import io.programminglife.personalfinancesapi.util.csv.CSVUtil;
 import io.programminglife.personalfinancesapi.util.dashboard.DashboardUtil;
+import org.springframework.util.StringUtils;
 
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
@@ -113,33 +113,20 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public List<PriceForCategoryGroupByMonth> findTotalExpensesForCategoryGroupByMonth(String categoryLabel, Long clientId) {
-        List<PriceForCategoryGroupByMonth> result = new ArrayList<>();
+    public List<TotalAmountForCategoryGroupByMonth> findTotalAmountPerCategoryGroupByMonth(String categoryLabel, Long clientId) throws MyFinancesException {
+        Optional<Category> category = categoryService.findCategoryByLabel(categoryLabel);
 
-        Optional<Category> currentCategoryOpt = categoryService.findCategoryByLabel(categoryLabel);
-        if (currentCategoryOpt.isPresent()) {
-            Category currentCategory = currentCategoryOpt.get();
-            List<Transaction> clientExpenses = expenseRepository.findAllByCategoryIdEqualsAndClientIdEqualsOrderByExpenseDateAsc(currentCategory.getId(), clientId).stream()
-                    .map(expense -> DashboardUtil.expenseTransaction(expense)).collect(Collectors.toList());
-
-            for (Transaction tx : clientExpenses) {
-                String txMonth = tx.getDate().getMonth().name();
-                Float txAmount = tx.getAmount();
-
-                Optional<PriceForCategoryGroupByMonth> recordOpt = DashboardUtil.containsTransactionForMonth(result, txMonth);
-
-                if (!result.isEmpty() && recordOpt.isPresent()) {
-                    PriceForCategoryGroupByMonth record = recordOpt.get();
-                    result.remove(record);
-                    record.setAmount(record.getAmount() + txAmount);
-                    result.add(record);
-                } else {
-                    result.add(new PriceForCategoryGroupByMonth(categoryLabel, txAmount, txMonth));
-                }
+        if (category.isPresent()) {
+            Optional<List<TotalAmountForCategoryGroupByMonth>> dbResult =
+                    expenseRepository.findTotalAmountPerCategoryGroupByMonth(category.get().getId(), clientId);
+            if (dbResult.isPresent()) {
+                return dbResult.get();
+            } else {
+                throw new MyFinancesException("Something went wrong with the query!");
             }
+        } else {
+            throw new MyFinancesException(String.format("No category found for label %s", categoryLabel));
         }
-
-        return result;
     }
 
 
