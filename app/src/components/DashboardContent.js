@@ -88,7 +88,7 @@ class DashboardContent extends Component {
                 datasets: [
                     {
                         label: "2022",
-                        data: allCategories.map((data) => data.totalAmount),
+                        data: allCategories.map((data) => data.total),
                         backgroundColor: [
                             "#86efac",
                             "#6ee7b7",
