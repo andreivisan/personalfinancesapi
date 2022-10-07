@@ -112,7 +112,7 @@ class ExpensesOverview extends Component {
                                         <>
                                             <div className="col-span-2 text-gray-500"
                                                  key={record.category}>{record.category}</div>
-                                            <div>{record.totalAmount.toFixed(2)} <span className="text-gray-500">&euro;</span>
+                                            <div>{record.total.toFixed(2)} <span className="text-gray-500">&euro;</span>
                                             </div>
                                         </>
                                     );
